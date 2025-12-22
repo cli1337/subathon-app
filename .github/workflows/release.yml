@@ -69,11 +69,17 @@ jobs:
           WIN_CSC_KEY_PASSWORD: ""
         timeout-minutes: 30
       
+      - name: Prepare release files
+        run: |
+          New-Item -ItemType Directory -Force -Path release-files | Out-Null
+          Copy-Item dist/*.exe release-files/ -ErrorAction SilentlyContinue
+          Copy-Item dist/*.blockmap release-files/ -ErrorAction SilentlyContinue
+      
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: windows-build
-          path: dist/*
+          path: release-files/*
           retention-days: 30
 
   release:
