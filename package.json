@@ -14,11 +14,8 @@
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "electron-builder",
+    "build": "electron-builder --win",
     "build:win": "electron-builder --win",
-    "build:mac": "electron-builder --mac",
-    "build:linux": "electron-builder --linux",
-    "build:all": "electron-builder --win --mac --linux",
     "build:win:local": "electron-builder --win --config.win.sign=null",
     "dist": "npm run build",
     "version:patch": "npm version patch && git push && git push --tags",

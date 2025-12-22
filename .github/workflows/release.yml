@@ -7,18 +7,7 @@ on:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
-        include:
-          - os: windows-latest
-            build: build:win
-          - os: macos-latest
-            build: build:mac
-          - os: ubuntu-latest
-            build: build:linux
-    
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     
     steps:
       - name: Checkout code
@@ -39,14 +28,14 @@ jobs:
         run: pnpm install --frozen-lockfile
       
       - name: Build application
-        run: pnpm run ${{ matrix.build }}
+        run: pnpm run build:win
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.os }}-build
+          name: windows-build
           path: dist/*
           retention-days: 30
 
