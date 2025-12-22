@@ -1,13 +1,23 @@
-const { contextBridge, ipcRenderer } = require("electron");
+const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld("electronAPI", {
-  minimize: () => ipcRenderer.send("window-minimize"),
-  minimize: () => ipcRenderer.send("window-minimize"),
-  maximize: () => ipcRenderer.send("window-maximize"),
-  close: () => ipcRenderer.send("window-close"),
-  saveConfig: (data) => ipcRenderer.send("save-config", data),
-  onConfigLoaded: (cb) => ipcRenderer.on("config-loaded", cb),
-  onConfigSaved: (cb) => ipcRenderer.on("config-saved", cb),
-  onKickAuthSuccess: (cb) => ipcRenderer.on("kick-auth-success", cb),
-  openOverlay: (port) => ipcRenderer.send("open-overlay", port),
+contextBridge.exposeInMainWorld('electronAPI', {
+
+  minimize: () => ipcRenderer.send('window-minimize'),
+  maximize: () => ipcRenderer.send('window-maximize'),
+  close: () => ipcRenderer.send('window-close'),
+
+  onMaximized: (callback) => ipcRenderer.on('window-maximized', callback),
+  onUnmaximized: (callback) => ipcRenderer.on('window-unmaximized', callback),
+  removeMaximizedListeners: () => {
+    ipcRenderer.removeAllListeners('window-maximized');
+    ipcRenderer.removeAllListeners('window-unmaximized');
+  },
+
+  loadConfig: () => ipcRenderer.invoke('load-config'),
+  saveConfig: (data) => ipcRenderer.send('save-config', data),
+  onConfigUpdated: (callback) => ipcRenderer.on('config-updated', (_, data) => callback(data)),
+
+  updateOverlay: (data) => ipcRenderer.send('overlay-update', data),
+
+  openExternal: (url) => ipcRenderer.invoke('open-external', url),
 });

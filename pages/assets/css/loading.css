@@ -90,6 +90,8 @@
     color: var(--text-muted);
     opacity: 0;
     animation: fadeIn 0.6s 1.2s forwards;
+    min-height: 50px;
+    line-height: 1.6;
   }
 
   @keyframes float {

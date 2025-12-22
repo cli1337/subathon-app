@@ -1,603 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="app_name">Subathon</title>
-  <link rel="stylesheet" href="./assets/css/styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="app_name">Subathon</title>
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
+
 <body>
-  <div id="toast-container"></div>
-
-  <div class="custom-titlebar">
-    <div class="titlebar-drag">
-      <div class="titlebar-app-name" data-i18n="app_name">Subathon</div>
-      <div class="titlebar-page-title" id="currentPageTitle" data-i18n="dashboard_title">Dashboard</div>
+    <div id="toast-container"></div>
+    <div class="custom-titlebar">
+        <div class="titlebar-drag">
+            <div class="titlebar-app-name" data-i18n="app_name">
+                Subathon
+            </div>
+            <div class="titlebar-page-title" id="currentPageTitle" data-i18n="dashboard_title">
+                Dashboard
+            </div>
+        </div>
+        <div class="titlebar-controls">
+            <button id="minimizeBtn" class="titlebar-btn" title="Minimize" data-i18n-title="title_minimize"><svg viewbox="0 0 24 24">
+                    <line x1="6" y1="12" x2="18" y2="12" stroke="currentColor" stroke-width="2"></line>
+                </svg></button> <button id="maximizeBtn" class="titlebar-btn" title="Maximize / Restore" data-i18n-title="title_maxrestore"><svg class="max-icon" viewbox="0 0 24 24">
+                    <rect x="5" y="5" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"></rect>
+                </svg> <svg class="restore-icon" viewbox="0 0 24 24" style="display:none;">
+                    <path d="M6 8h4V4h10v10h-4v4H6V8z" fill="none" stroke="currentColor" stroke-width="2"></path>
+                    <rect x="8" y="8" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"></rect>
+                </svg></button> <button id="closeBtn" class="titlebar-btn close" title="Close" data-i18n-title="title_close"><svg viewbox="0 0 24 24">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg></button>
+        </div>
     </div>
-    <div class="titlebar-controls">
-      <button id="minimizeBtn" class="titlebar-btn" title="Minimize" data-i18n-title="title_minimize">
-        <svg viewBox="0 0 24 24"><line x1="6" y1="12" x2="18" y2="12" stroke="currentColor" stroke-width="2"/></svg>
-      </button>
-      <button id="maximizeBtn" class="titlebar-btn" title="Maximize / Restore" data-i18n-title="title_maxrestore">
-        <svg class="max-icon" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-        <svg class="restore-icon" viewBox="0 0 24 24" style="display:none;"><path d="M6 8h4V4h10v10h-4v4H6V8z" fill="none" stroke="currentColor" stroke-width="2"/><rect x="8" y="8" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-      </button>
-      <button id="closeBtn" class="titlebar-btn close" title="Close" data-i18n-title="title_close">
-        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
+    <div class="app-container">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-page="dashboard"><svg class="nav-icon" viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg> <span data-i18n="dashboard_title">Dashboard</span></button> <button class="nav-item" data-page="platforms"><svg class="nav-icon" viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg> <span data-i18n="platforms_title">Platforms</span></button> <button class="nav-item" data-page="profiles"><svg class="nav-icon" viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg> <span>Profiles</span></button> <button class="nav-item" data-page="metrics"><svg class="nav-icon" viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="9" y1="9" x2="15" y2="9"></line>
+                        <line x1="9" y1="15" x2="15" y2="15"></line>
+                        <line x1="12" y1="3" x2="12" y2="21"></line>
+                    </svg> <span data-i18n="metrics_title">Metrics</span></button> <button class="nav-item" data-page="overlay"><svg class="nav-icon" viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+                        <line x1="7" y1="2" x2="7" y2="22"></line>
+                        <line x1="17" y1="2" x2="17" y2="22"></line>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <line x1="2" y1="7" x2="7" y2="7"></line>
+                        <line x1="2" y1="17" x2="7" y2="17"></line>
+                        <line x1="17" y1="17" x2="22" y2="17"></line>
+                        <line x1="17" y1="7" x2="22" y2="7"></line>
+                    </svg> <span data-i18n="overlay_title">Overlay</span></button> <button class="nav-item" data-page="reducer"><svg class="nav-icon" viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg> <span>Reducer</span></button> <button class="nav-item" data-page="settings"><svg class="nav-icon" viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6m0-18a9 9 0 1 1 0 18 9 9 0 0 1 0-18z"></path>
+                        <path d="M16.24 7.76l-4.24 4.24m0 0l-4.24 4.24M7.76 7.76l4.24 4.24"></path>
+                    </svg> <span data-i18n="settings_title">Settings</span></button>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="status-indicator">
+                    <div class="status-dot" id="connectionStatus"></div>
+                    <span class="status-text" id="statusText">Inactive</span>
+                </div>
+            </div>
+        </aside>
+        <main class="main-content" id="mainContent"></main>
     </div>
-  </div>
-
-  <div class="app-container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <nav class="sidebar-nav">
-        <button class="nav-item active" data-page="dashboard">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="7" height="7"></rect>
-            <rect x="14" y="3" width="7" height="7"></rect>
-            <rect x="14" y="14" width="7" height="7"></rect>
-            <rect x="3" y="14" width="7" height="7"></rect>
-          </svg>
-          <span data-i18n="dashboard_title">Dashboard</span>
-        </button>
-
-        <button class="nav-item" data-page="platforms">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-          </svg>
-          <span data-i18n="platforms_title">Platforms</span>
-        </button>
-
-        <button class="nav-item" data-page="metrics">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="12" y1="1" x2="12" y2="23"></line>
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-          </svg>
-          <span data-i18n="metrics_title">Metrics</span>
-        </button>
-
-        <button class="nav-item" data-page="overlay">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
-            <line x1="7" y1="2" x2="7" y2="22"></line>
-            <line x1="17" y1="2" x2="17" y2="22"></line>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <line x1="2" y1="7" x2="7" y2="7"></line>
-            <line x1="2" y1="17" x2="7" y2="17"></line>
-            <line x1="17" y1="17" x2="22" y2="17"></line>
-            <line x1="17" y1="7" x2="22" y2="7"></line>
-          </svg>
-          <span data-i18n="overlay_title">Overlay</span>
-        </button>
-
-        <button class="nav-item" data-page="reducer">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <path d="M8 12h8"></path>
-          </svg>
-          <span>Reducer</span>
-        </button>
-
-        <button class="nav-item" data-page="settings">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M12 1v6m0 6v6m0-18a9 9 0 1 1 0 18 9 9 0 0 1 0-18z"></path>
-            <path d="M16.24 7.76l-4.24 4.24m0 0l-4.24 4.24M7.76 7.76l4.24 4.24"></path>
-          </svg>
-          <span data-i18n="settings_title">Settings</span>
-        </button>
-      </nav>
-
-      <div class="sidebar-footer">
-        <div class="status-indicator">
-          <div class="status-dot" id="connectionStatus"></div>
-          <span class="status-text" data-i18n="not_connected">Disconnected</span>
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-i18n="edit_value">Edit Value</h2>
+                <button class="btn btn-icon" id="closeModalBtn"><svg viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg></button>
+            </div>
+            <div class="modal-body">
+                <label data-i18n="new_value">New Value</label>
+                <input type="text" id="editValueInput" class="input" placeholder="00:00:00 or 0">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelEditBtn" data-i18n="cancel">Cancel</button> <button class="btn btn-primary" id="saveEditBtn" data-i18n="save">Save</button>
+            </div>
         </div>
-      </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main-content">
-      <!-- DASHBOARD -->
-      <div class="page active" id="dashboard">
-        <header class="page-header">
-          <h1 data-i18n="dashboard_title">Dashboard</h1>
-          <p class="page-subtitle" data-i18n="dashboard_subtitle">Monitor your subathon in real-time</p>
-          <div class="language-switcher">
-            <button class="lang-btn active" data-lang="en" title="English">
-              <img src="https://flagcdn.com/w20/us.png" alt="English" width="20" height="15" />
-            </button>
-            <button class="lang-btn disabled" data-lang="lv" title="Latviešu" disabled>
-              <img src="https://flagcdn.com/w20/lv.png" alt="Latviešu" width="20" height="15" />
-            </button>
-          </div>
-        </header>
-
-        <div class="dashboard-grid">
-          <!-- Main Display Card -->
-          <div class="card span-2">
-            <div class="card-header">
-              <h2 data-i18n="current_value">Current Value</h2>
-              <div class="card-actions">
-                <button class="btn btn-icon" id="startBtn" data-i18n-title="start">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </button>
-                <button class="btn btn-icon" id="pauseBtn" disabled data-i18n-title="pause">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="6" y="4" width="4" height="16"></rect>
-                    <rect x="14" y="4" width="4" height="16"></rect>
-                  </svg>
-                </button>
-                <button class="btn btn-icon" id="resetBtn" data-i18n-title="reset">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="1 4 1 10 7 10"></polyline>
-                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
-                  </svg>
-                </button>
-                <button class="btn btn-icon" id="toggleReducerBtn" title="Toggle Reducer">
-                  <i class="fas fa-ban" style="color: #ff4444;"></i>
-                </button>
-              </div>
-            </div>
-            <div class="main-display">
-              <div class="display-value" id="mainDisplay">00:00:00</div>
-              <div class="display-unit" id="displayUnit" data-i18n="unit_time">TIME</div>
-            </div>
-            <div class="display-controls">
-              <button class="btn btn-secondary" id="editValueBtn" data-i18n="edit_value">Edit Value</button>
-            </div>
-          </div>
-
-          <!-- Stats Cards -->
-          <div class="card">
-            <div class="stat-card">
-              <div class="stat-icon" style="background:white;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:black">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-              <div class="stat-content">
-                <div class="stat-label" data-i18n="total_events">Total Events</div>
-                <div class="stat-value" id="totalEvents">0</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="stat-card">
-              <div class="stat-icon" style="background:white;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:black">
-                  <line x1="12" y1="1" x2="12" y2="23"></line>
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                </svg>
-              </div>
-              <div class="stat-content">
-                <div class="stat-label" data-i18n="value_added">Value Added</div>
-                <div class="stat-value" id="valueAdded">+0</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Recent Events -->
-          <div class="card span-2">
-            <div class="card-header">
-              <h2 data-i18n="recent_events">Recent Events</h2>
-              <button class="btn btn-secondary btn-icon" id="addManualEventBtn" data-i18n-title="add_manual_event">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="12" y1="5" x2="12" y2="19"></line>
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
-              </button>
-            </div>
-            <div class="events-list" id="eventsList">
-              <div class="empty-state">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="8" x2="12" y2="12"></line>
-                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-                <p data-i18n="no_events">No events yet. Connect a platform or add manual events.</p>
-              </div>
-            </div>
-
-            <!-- Manual event section -->
-            <div class="manual-entry-section" id="manualEntrySection" style="display:none;">
-              <h3 data-i18n="add_manual_event">Add Manual Event</h3>
-              <div class="manual-entry-form">
-                <div class="form-group">
-                  <label data-i18n="event_description">Event Description</label>
-                  <input type="text" id="manualEventDesc" placeholder="e.g., Offline donation" class="input" />
-                </div>
-                <div class="form-group">
-                  <label data-i18n="platform">Platform</label>
-                  <select id="manualEventPlatform" class="input">
-                    <option value="Manual">Manual</option>
-                    <option value="Twitch">Twitch</option>
-                    <option value="KICK">KICK</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label data-i18n="value">Value</label>
-                  <input type="number" id="manualEventValue" placeholder="120" class="input" value="120" />
-                </div>
-                <div class="form-group">
-                  <label>&nbsp;</label>
-                  <button class="btn btn-primary" id="submitManualEventBtn" data-i18n="add_event_btn">Add Event</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- PLATFORMS -->
-      <div class="page" id="platforms">
-        <header class="page-header">
-          <h1 data-i18n="platforms_title">Platforms</h1>
-          <p class="page-subtitle" data-i18n="platforms_subtitle">Connect to Twitch, KICK, and other streaming platforms</p>
-        </header>
-
-        <div class="platforms-grid">
-          <!-- TWITCH -->
-          <div class="card">
-            <div class="platform-card disabled">
-              <div class="platform-header">
-                <div class="platform-icon twitch-icon">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
-                  </svg>
-                </div>
-                <div>
-                  <h3 data-i18n="twitch">Twitch</h3>
-                  <p class="platform-status" id="twitchStatus" data-i18n="not_connected">Not Connected</p>
-                </div>
-              </div>
-              <div class="platform-form">
-                <div class="form-group">
-                  <label data-i18n="channel_name">Channel Name</label>
-                  <input type="text" id="twitchChannel" placeholder="your_channel_name" class="input" />
-                </div>
-                <div class="form-group">
-                  <label data-i18n="oauth_token">OAuth Token</label>
-                  <input type="password" id="twitchToken" placeholder="oauth:..." class="input" />
-                </div>
-                <button class="btn btn-primary" id="twitchConnectBtn" data-i18n="connect_twitch">Connect to Twitch</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- KICK -->
-          <div class="card">
-            <div class="platform-card">
-              <div class="platform-header">
-                <div class="platform-icon kick-icon">
-                  <!-- keep your big KICK SVG if you want; shortened here -->
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                  </svg>
-                </div>
-                <div>
-                  <h3 data-i18n="kick">KICK</h3>
-                  <p class="platform-status" id="kickStatus" data-i18n="not_connected">Not Connected</p>
-                  <p id="kickUsername" style="font-size:12px;color:var(--text-secondary);"></p>
-                </div>
-              </div>
-
-              <div class="platform-form">
-                <h4>Step 1: Link Kick App</h4>
-                <p style="font-size:12px;color:var(--text-secondary);">
-                  Go to <code>https://kick.com/settings/developer</code>, create an app and set Redirect URL to
-                  <code>http://localhost:PORT</code> (same as your Overlay port).
-                </p>
-
-                <div class="form-group">
-                  <label>Client ID</label>
-                  <div class="secret-wrapper">
-                    <input type="password" id="kickClientId" class="input" />
-                    <button type="button" class="btn btn-icon secret-toggle" data-target="kickClientId">👁</button>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label>Client Secret</label>
-                  <div class="secret-wrapper">
-                    <input type="password" id="kickClientSecret" class="input" />
-                    <button type="button" class="btn btn-icon secret-toggle" data-target="kickClientSecret">👁</button>
-                  </div>
-                </div>
-
-                <button class="btn btn-primary" id="kickSaveAppBtn">Save Kick App</button>
-
-                <hr style="margin:16px 0;border-color:rgba(255,255,255,0.1);" />
-
-                <h4>Step 2: Link Kick Account</h4>
-                <p style="font-size:12px;color:var(--text-secondary);">
-                  After saving your app, click below to open the browser login and authorize.
-                </p>
-
-                <button class="btn btn-secondary" id="kickLinkAccountBtn">Link Account</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- METRICS -->
-      <div class="page" id="metrics">
-        <header class="page-header">
-          <h1 data-i18n="metrics_config_title">Metrics Configuration</h1>
-          <p class="page-subtitle" data-i18n="metrics_subtitle">Customize what values are tracked and how they increment</p>
-        </header>
-
-        <div class="metrics-layout">
-          <div class="card">
-            <div class="card-header">
-              <h2 data-i18n="metric_type">Metric Type</h2>
-            </div>
-            <div class="default-card-content">
-              <div class="form-group">
-                <label data-i18n="type_label">Type</label>
-                <select id="metricType" class="input">
-                  <option value="time" data-i18n="unit_time">Time (HH:MM:SS)</option>
-                  <option value="distance" data-i18n="unit_distance">Distance (KM/M)</option>
-                  <option value="custom" data-i18n="unit_custom">Custom Unit</option>
-                </select>
-              </div>
-              <div id="customUnitSection" class="form-group" style="display:none;">
-                <label data-i18n="custom_unit_name">Custom Unit Name</label>
-                <input type="text" id="customUnit" placeholder="e.g., Points, Stars, etc." class="input" />
-              </div>
-              <div class="form-group" style="margin-top:10px;">
-                <label data-i18n="starting_value">Starting Value</label>
-                <input type="text" id="startingValue" placeholder="00:00:00 or 0" class="input" />
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h2 data-i18n="event_values">Event Values</h2>
-              <p data-i18n="event_values_desc">Configure how much each event adds to your metric</p>
-            </div>
-            <div class="default-card-content">
-              <div class="event-values">
-                <div class="event-value-item">
-                  <label data-i18n="subscription">Subscription</label>
-                  <input type="number" id="subValue" value="120" class="input" />
-                  <span class="unit-label" data-i18n="seconds">seconds</span>
-                </div>
-                <div class="event-value-item">
-                  <label data-i18n="gift_sub">Gift Sub</label>
-                  <input type="number" id="giftValue" value="60" class="input" />
-                  <span class="unit-label" data-i18n="seconds">seconds</span>
-                </div>
-                <div class="event-value-item">
-                  <label data-i18n="bits_per_100">Bits (per 100)</label>
-                  <input type="number" id="bitsValue" value="30" class="input" />
-                  <span class="unit-label" data-i18n="seconds">seconds</span>
-                </div>
-                <div class="event-value-item">
-                  <label>Donation (per €1)</label>
-                  <input type="number" id="donationValue" value="60" class="input" />
-                  <span class="unit-label">seconds</span>
-                </div>
-                <div class="event-value-item">
-                  <label data-i18n="follow">Follow</label>
-                  <input type="number" id="followValue" value="0" class="input" />
-                  <span class="unit-label" data-i18n="seconds">seconds</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- OVERLAY -->
-      <div class="page" id="overlay">
-        <header class="page-header">
-          <h1 data-i18n="overlay_settings_title">Overlay Settings</h1>
-          <p class="page-subtitle" data-i18n="overlay_subtitle">Customize your stream overlay appearance</p>
-        </header>
-
-        <div class="overlay-layout">
-          <div class="card">
-            <div class="card-header">
-              <h2 data-i18n="overlay_control">Overlay Control</h2>
-            </div>
-            <div class="default-card-content">
-              <div class="form-group">
-                <label>Overlay Port</label>
-                <input type="number" id="overlayPort" class="input" min="1" max="65535" value="55814" />
-                <p style="font-size:13px;color:var(--text-secondary);margin-top:6px;">
-                  Use this port for OBS browser source:
-                  <code>http://localhost:PORT/overlay</code><br />
-                  And as Redirect URL in Kick developer:
-                  <code>http://localhost:PORT</code>
-                </p>
-              </div>
-
-              <div class="form-group">
-                <label data-i18n="font_size">Font Size</label>
-                <input type="range" id="fontSize" min="20" max="120" value="72" class="slider" />
-                <span id="fontSizeValue">72px</span>
-              </div>
-
-              <div class="form-group">
-                <label data-i18n="text_color">Text Color</label>
-                <input type="color" id="textColor" value="#ffffff" class="color-input" />
-              </div>
-
-              <div class="form-group">
-                <label data-i18n="background">Background</label>
-                <select id="overlayBackground" class="input">
-                  <option value="transparent" data-i18n="bg_transparent">Transparent</option>
-                  <option value="solid" data-i18n="bg_solid">Solid Color</option>
-                  <option value="gradient" data-i18n="bg_gradient">Gradient</option>
-                </select>
-              </div>
-
-              <div id="bgColorSection" class="form-group" style="display:none;">
-                <label data-i18n="background_color">Background Color</label>
-                <input type="color" id="bgColor" value="#000000" class="color-input" />
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h2 data-i18n="preview">Preview</h2>
-            </div>
-            <div class="overlay-preview">
-              <div id="overlayPreview" class="preview-display">
-                <div class="preview-text" id="previewText">00:00:00</div>
-                <div class="preview-unit" id="previewUnit" data-i18n="unit_time">TIME</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- REDUCER -->
-      <div class="page" id="reducer">
-        <header class="page-header">
-          <h1>Reducer</h1>
-          <p class="page-subtitle">Configure automatic reduction of your metric over time</p>
-        </header>
-
-        <div class="card">
-          <div class="card-header">
-            <h2>Reducer Settings</h2>
-          </div>
-          <div class="default-card-content">
-            <div class="form-group">
-              <label>Enable Reducer</label>
-              <label class="checkbox-label">
-                <input type="checkbox" id="reducerEnabled" />
-                <span>Reduce value automatically</span>
-              </label>
-            </div>
-
-            <div class="form-group">
-              <label>Reduce amount per second</label>
-              <input type="number" id="reducerAmount" class="input" value="1" />
-              <p style="font-size:13px;color:var(--text-secondary);margin-top:6px;">
-                For <strong>Time</strong>: seconds per second (not recommended).<br />
-                For <strong>Distance</strong>: km per second.<br />
-                For <strong>Custom</strong>: your custom units per second.
-              </p>
-            </div>
-
-            <div class="settings-actions">
-              <button class="btn btn-primary" id="saveReducerBtn">Save Reducer</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SETTINGS -->
-      <div class="page" id="settings">
-        <header class="page-header">
-          <h1 data-i18n="settings_title">Settings</h1>
-          <p class="page-subtitle" data-i18n="settings_subtitle">Configure application preferences and manage data</p>
-        </header>
-
-        <div class="card">
-          <div class="card-header">
-            <h2 data-i18n="general_settings">General Settings</h2>
-          </div>
-          <div class="default-card-content">
-            <div class="form-group">
-              <label class="checkbox-label">
-                <input type="checkbox" id="autoSave" />
-                <span data-i18n="auto_save">Auto-save configuration</span>
-              </label>
-            </div>
-            <div class="form-group">
-              <label class="checkbox-label">
-                <input type="checkbox" id="soundAlerts" />
-                <span data-i18n="sound_alerts">Sound alerts on events</span>
-              </label>
-            </div>
-            <div class="form-group">
-              <label class="checkbox-label">
-                <input type="checkbox" id="startMinimized" />
-                <span data-i18n="start_minimized">Start minimized to tray</span>
-              </label>
-            </div>
-            <div class="settings-actions">
-              <button class="btn btn-primary" id="saveSettingsBtn" data-i18n="save_settings">Save Settings</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- DATA MANAGEMENT -->
-        <div class="card" style="margin-top:24px;">
-          <div class="card-header">
-            <h2 data-i18n="data_management">Data Management</h2>
-            <p data-i18n="data_management_subtitle">Import or export your subathon data including events, metrics, and configuration</p>
-          </div>
-          <div class="default-card-content">
-            <div class="data-management">
-              <button class="btn btn-primary" id="exportConfigBtn" data-i18n="export_data">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="7 10 12 15 17 10"></polyline>
-                  <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-                Export Data
-              </button>
-              <button class="btn btn-secondary" id="importConfigBtn" data-i18n="import_data">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="17 8 12 3 7 8"></polyline>
-                  <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg>
-                Import Data
-              </button>
-            </div>
-            <p style="margin-top:16px;font-size:13px;color:var(--text-secondary);" data-i18n="export_help">
-              Export your current data to save a backup, or import previously saved data to restore your subathon progress.
-            </p>
-          </div>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- EDIT VALUE MODAL -->
-  <div class="modal" id="editModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 data-i18n="edit_value_title">Edit Value</h2>
-        <button class="btn btn-icon" id="closeModalBtn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label data-i18n="new_value">New Value</label>
-          <input type="text" id="editValueInput" class="input" placeholder="00:00:00" />
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="cancelEditBtn" data-i18n="cancel">Cancel</button>
-        <button class="btn btn-primary" id="saveEditBtn" data-i18n="save">Save</button>
-      </div>
     </div>
-  </div>
-
-  <script src="./assets/js/renderer.js"></script>
+    <div class="modal" id="resetModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Reset Values</h2>
+                <button class="btn btn-icon" id="closeResetModalBtn"><svg viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to reset all values? This will:</p>
+                <ul style="margin: 16px 0; padding-left: 24px; color: var(--text-secondary);">
+                    <li>Set current value to 0</li>
+                    <li>Clear all events</li>
+                    <li>Reset total events and value added</li>
+                </ul>
+                <p style="color: var(--danger-color); font-weight: 600;">This action cannot be undone!</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelResetBtn">Cancel</button> <button class="btn btn-danger" id="confirmResetBtn">Reset All Values</button>
+            </div>
+        </div>
+    </div>
+    <script src="./assets/js/load-pages.js"></script>
+    <script src="./assets/js/custom-dropdown.js"></script>
+    <script src="./assets/js/renderer.js"></script>
 </body>
+
 </html>

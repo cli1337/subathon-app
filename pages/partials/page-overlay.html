@@ -1,0 +1,400 @@
+<div class="page" id="overlay">
+    <header class="page-header">
+        <h1 data-i18n="overlay_settings_title">Overlay Settings</h1>
+        <p class="page-subtitle" data-i18n="overlay_subtitle">
+            Customize your stream overlay appearance
+        </p>
+    </header>
+    <div class="overlay-layout">
+        <div class="card">
+            <div class="card-header">
+                <h2 data-i18n="overlay_control">Overlay Control</h2>
+                <button class="btn btn-primary" id="openOverlayBtn"
+                    title="Open overlay in browser">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2"
+                        style="width: 16px; height: 16px; margin-right: 6px;">
+                        <path
+                            d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6">
+                        </path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                    Open Overlay
+                </button>
+            </div>
+            <div class="card-content">
+                <div class="form-group">
+                    <label>Overlay Port</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input type="number" id="overlayPort" class="input" min="1"
+                            max="65535" value="55814" style="flex: 1;">
+                        <button class="btn btn-primary" id="applyPortBtn">
+                            Apply
+                        </button>
+                    </div>
+                    <p
+                        style="font-size:13px;color:var(--text-secondary);margin-top:6px;">
+                        Use this port for OBS browser source:
+                        <code>http:
+                        And as Redirect URL in Kick developer:
+                        <code>http:
+                    </p>
+                </div>
+                <div class="overlay-sections">
+                    <button class="overlay-section-btn" data-section="basic">
+                        Basic Settings
+                    </button>
+                    <button class="overlay-section-btn" data-section="unit">
+                        Unit Position
+                    </button>
+                    <button class="overlay-section-btn" data-section="status">
+                        Status Text
+                    </button>
+                    <button class="overlay-section-btn" data-section="gifter" disabled
+                        style="opacity: 0.5; cursor: not-allowed;">
+                        Gifter Card (Disabled)
+                    </button>
+                </div>
+                <div class="overlay-section-content" id="section-basic">
+                    <div class="form-group">
+                        <label data-i18n="font_size">Font Size</label>
+                        <input type="range" id="fontSize" min="20" max="120"
+                            value="72" class="slider">
+                        <span id="fontSizeValue">72px</span>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="text_color">Text Color</label>
+                        <input type="color" id="textColor" value="#ffffff"
+                            class="color-input">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="background">Background</label>
+                        <select id="overlayBackground" class="input">
+                            <option value="transparent" data-i18n="bg_transparent">
+                                Transparent
+                            </option>
+                            <option value="solid" data-i18n="bg_solid">
+                                Solid Color
+                            </option>
+                            <option value="gradient" data-i18n="bg_gradient">
+                                Gradient
+                            </option>
+                        </select>
+                    </div>
+                    <div id="bgColorSection" class="form-group" style="display:none;">
+                        <label data-i18n="background_color">Background Color</label>
+                        <input type="color" id="bgColor" value="#000000"
+                            class="color-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Overlay Page Background</label>
+                        <input type="color" id="overlayPageBg" value="#000000"
+                            class="color-input">
+                        <p
+                            style="font-size:13px;color:var(--text-secondary);margin-top:6px;">
+                            Background color for the entire overlay page
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label>Text Shadow</label>
+                        <div style="margin-bottom: 8px;">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="enableTextShadow" checked>
+                                <span>Enable text shadow</span>
+                            </label>
+                        </div>
+                        <div id="textShadowControls"
+                            style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                            <div>
+                                <label
+                                    style="font-size: 12px; color: var(--text-secondary);">
+                                    X Offset
+                                </label>
+                                <input type="number" id="textShadowX" class="input"
+                                    value="0" min="-20" max="20">
+                            </div>
+                            <div>
+                                <label
+                                    style="font-size: 12px; color: var(--text-secondary);">
+                                    Y Offset
+                                </label>
+                                <input type="number" id="textShadowY" class="input"
+                                    value="4" min="-20" max="20">
+                            </div>
+                            <div>
+                                <label
+                                    style="font-size: 12px; color: var(--text-secondary);">
+                                    Blur
+                                </label>
+                                <input type="number" id="textShadowBlur" class="input"
+                                    value="12" min="0" max="50">
+                            </div>
+                        </div>
+                        <div style="margin-top: 8px;">
+                            <label
+                                style="font-size: 12px; color: var(--text-secondary);">
+                                Shadow Color
+                            </label>
+                            <input type="color" id="textShadowColor" value="#000000"
+                                class="color-input" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="overlay-section-content" id="section-unit"
+                    style="display:none;">
+                    <div class="form-group">
+                        <label>Unit Position</label>
+                        <select id="unitPosition" class="input">
+                            <option value="top">Above Value</option>
+                            <option value="bottom">Below Value</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Unit Alignment</label>
+                        <select id="unitAlignment" class="input">
+                            <option value="left">Left</option>
+                            <option value="center">Center</option>
+                            <option value="right">Right</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Text Before Unit (optional)</label>
+                        <input type="text" id="unitPrefix" class="input"
+                            placeholder="e.g. Remaining">
+                    </div>
+                    <div class="form-group">
+                        <label>Text After Unit (optional)</label>
+                        <input type="text" id="unitSuffix" class="input"
+                            placeholder="e.g. Left">
+                    </div>
+                    <div class="form-group">
+                        <label>Unit Size</label>
+                        <input type="range" id="unitSize" class="slider" min="12"
+                            max="72" value="24">
+                        <span id="unitSizeValue">24px</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Unit Color</label>
+                        <input type="color" id="unitColor" value="#ffffff"
+                            class="color-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="showUnitWhenPaused" checked>
+                            <span>Show unit when paused</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="showUnitWhenStopped" checked>
+                            <span>Show unit when stopped</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="overlay-section-content" id="section-status"
+                    style="display:none;">
+                    <div class="form-group">
+                        <label>PAUSED Text</label>
+                        <input type="text" id="pausedText" class="input"
+                            placeholder="PAUSED" value="PAUSED">
+                    </div>
+                    <div class="form-group">
+                        <label>STOPPED Text</label>
+                        <input type="text" id="stoppedText" class="input"
+                            placeholder="STOPPED" value="STOPPED">
+                    </div>
+                    <div class="form-group">
+                        <label>Status Text Size</label>
+                        <input type="range" id="pausedTextSize" class="slider"
+                            min="24" max="120" value="48">
+                        <span id="pausedTextSizeValue">48px</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Status Text Color</label>
+                        <input type="color" id="pausedTextColor" class="color-input"
+                            value="#ffaa00">
+                    </div>
+                    <div class="form-group">
+                        <label>Status Text Shadow</label>
+                        <div style="margin-bottom: 8px;">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="enableStatusTextShadow"
+                                    checked>
+                                <span>Enable shadow</span>
+                            </label>
+                        </div>
+                        <div id="statusTextShadowControls"
+                            style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                            <div>
+                                <label
+                                    style="font-size: 12px; color: var(--text-secondary);">
+                                    X Offset
+                                </label>
+                                <input type="number" id="statusTextShadowX"
+                                    class="input" value="0" min="-20" max="20">
+                            </div>
+                            <div>
+                                <label
+                                    style="font-size: 12px; color: var(--text-secondary);">
+                                    Y Offset
+                                </label>
+                                <input type="number" id="statusTextShadowY"
+                                    class="input" value="4" min="-20" max="20">
+                            </div>
+                            <div>
+                                <label
+                                    style="font-size: 12px; color: var(--text-secondary);">
+                                    Blur
+                                </label>
+                                <input type="number" id="statusTextShadowBlur"
+                                    class="input" value="12" min="0" max="50">
+                            </div>
+                        </div>
+                        <div style="margin-top: 8px;">
+                            <label
+                                style="font-size: 12px; color: var(--text-secondary);">
+                                Shadow Color
+                            </label>
+                            <input type="color" id="statusTextShadowColor"
+                                value="#000000" class="color-input"
+                                style="width: 100%;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="showValueWhenPaused">
+                            <span>Show value when paused (in corner)</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="showValueWhenStopped">
+                            <span>Show value when stopped (in corner)</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="overlay-section-content" id="section-gifter"
+                    style="display:none;">
+                    <div style="opacity: 0.5; pointer-events: none;">
+                        <div class="form-group">
+                            <label>Vertical Position</label>
+                            <select id="gifterVerticalPosition" class="input"
+                                disabled>
+                                <option value="top">Above Value/Unit</option>
+                                <option value="bottom" selected>Below Value/Unit
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Horizontal Position</label>
+                            <select id="gifterHorizontalPosition" class="input"
+                                disabled>
+                                <option value="left" selected>Left</option>
+                                <option value="center">Center</option>
+                                <option value="right">Right</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Animation Type</label>
+                            <select id="gifterAnimation" class="input" disabled>
+                                <option value="slideUp" selected>Slide Up</option>
+                                <option value="slideLeft">Slide from Left</option>
+                                <option value="slideRight">Slide from Right</option>
+                                <option value="slideBottom">Slide from Bottom</option>
+                                <option value="fadeIn">Fade In</option>
+                                <option value="scale">Scale</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Card Size</label>
+                            <input type="range" id="gifterCardSize" class="slider"
+                                min="80" max="150" value="100" disabled>
+                            <span id="gifterCardSizeValue">100%</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Card Background Color</label>
+                            <input type="color" id="gifterCardBg" value="#000000"
+                                class="color-input" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Card Border Color</label>
+                            <input type="color" id="gifterCardBorder"
+                                value="#ffffff" class="color-input" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Name Text Size</label>
+                            <input type="range" id="gifterNameSize" class="slider"
+                                min="10" max="20" value="12" disabled>
+                            <span id="gifterNameSizeValue">12px</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Name Text Color</label>
+                            <input type="color" id="gifterNameColor"
+                                value="#ffffff" class="color-input" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount Text Size</label>
+                            <input type="range" id="gifterAmountSize"
+                                class="slider" min="10" max="20" value="13"
+                                disabled>
+                            <span id="gifterAmountSizeValue">13px</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount Text Color</label>
+                            <input type="color" id="gifterAmountColor"
+                                value="#22c55e" class="color-input" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Unit Text Size</label>
+                            <input type="range" id="gifterUnitSize" class="slider"
+                                min="6" max="12" value="8" disabled>
+                            <span id="gifterUnitSizeValue">8px</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h2 data-i18n="preview">Preview</h2>
+            </div>
+            <div class="card-content" style="padding: 24px;">
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label>Enable Value Animation</label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="enableValueAnimation" checked>
+                        <span>Animate value changes with counting effect</span>
+                    </label>
+                </div>
+                <div class="form-group" id="animationSpeedGroup"
+                    style="margin-bottom: 16px;">
+                    <label>Animation Speed</label>
+                    <input type="range" id="animationSpeed" class="slider"
+                        min="200" max="3000" value="1000" step="100">
+                    <span id="animationSpeedValue">1000ms</span>
+                    <small
+                        style="display: block; margin-top: 4px; color: var(--text-secondary); font-size: 12px;">
+                        Lower = faster animation
+                    </small>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>Demo/Test</label>
+                    <button class="btn btn-secondary" id="demoTestBtn">
+                        Test Gifter Event
+                    </button>
+                    <p
+                        style="font-size:13px;color:var(--text-secondary);margin-top:6px;">
+                        Click to simulate a gifter event in the overlay
+                    </p>
+                </div>
+                <div class="overlay-preview">
+                    <iframe id="overlayPreview" src="about:blank"
+                        style="width: 100%; height: 450px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-tertiary);"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

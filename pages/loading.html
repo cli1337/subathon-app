@@ -9,7 +9,7 @@
 <body>
   <div class="loading-card">
     <div class="app-logo">
-      <img src="./assets/icon.png" alt="Subathon">
+      <img src="./assets/img/icon.png" alt="Subathon">
     </div>
 
     <div class="title">Subathon</div>
@@ -19,7 +19,40 @@
       <div class="progress-bar"></div>
     </div>
 
-    <div class="status">Loading components...</div>
+    <div class="status" id="statusText">Loading...</div>
+    <div id="dev-mode-indicator" style="display: none; margin-top: 12px; font-size: 11px; color: #53fc18;">
+      DEV_MODE = True
+    </div>
   </div>
+  <script>
+    let stage = 0;
+    const stages = [
+      'Loading...',
+      'Loading Config...',
+      'Preloading Components...',
+      'Initializing Profiles...',
+      'Ready!'
+    ];
+    
+    function updateStatus() {
+      const statusEl = document.getElementById('statusText');
+      if (statusEl && stage < stages.length) {
+        statusEl.textContent = stages[stage];
+        stage++;
+        if (stage < stages.length) {
+          setTimeout(updateStatus, 800);
+        }
+      }
+    }
+    
+    setTimeout(updateStatus, 500);
+    
+    if (typeof window !== 'undefined' && window.DEV_MODE) {
+      const devIndicator = document.getElementById('dev-mode-indicator');
+      if (devIndicator) {
+        devIndicator.style.display = 'block';
+      }
+    }
+  </script>
 </body>
 </html>

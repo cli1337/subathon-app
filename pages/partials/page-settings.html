@@ -1,0 +1,84 @@
+<div class="page" id="settings">
+    <header class="page-header">
+        <h1 data-i18n="settings_title">Settings</h1>
+        <p class="page-subtitle" data-i18n="settings_subtitle">
+            Configure application preferences and manage data
+        </p>
+    </header>
+    <div class="card">
+        <div class="card-header">
+            <h2 data-i18n="general_settings">General Settings</h2>
+        </div>
+        <div class="card-content">
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="autoSave">
+                    <span data-i18n="auto_save">Auto-save configuration</span>
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="soundAlerts">
+                    <span data-i18n="sound_alerts">Sound alerts on events</span>
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="startMinimized">
+                    <span data-i18n="start_minimized">Start minimized to tray</span>
+                </label>
+            </div>
+            <div class="settings-actions">
+                <button class="btn btn-primary" id="saveSettingsBtn"
+                    data-i18n="save_settings">
+                    Save Settings
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card" style="margin-top:24px;">
+        <div class="card-header">
+            <h2 data-i18n="data_management">Data Management</h2>
+            <p data-i18n="data_management_subtitle">
+                Import or export your subathon data including events, metrics,
+                and configuration
+            </p>
+        </div>
+        <div class="card-content">
+            <div class="data-management">
+                <button class="btn btn-primary" id="exportConfigBtn"
+                    data-i18n="export_data">
+                    <svg viewbox="0 0 24 24" fill="none" stroke="currentcolor"
+                        stroke-width="2" style="width:18px;height:18px;">
+                        <path
+                            d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4">
+                        </path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Export Data
+                </button>
+                <button class="btn btn-secondary" id="importConfigBtn"
+                    data-i18n="import_data">
+                    <svg viewbox="0 0 24 24" fill="none" stroke="currentcolor"
+                        stroke-width="2" style="width:18px;height:18px;">
+                        <path
+                            d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4">
+                        </path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    Import Data
+                </button>
+            </div>
+            <p
+                style="margin-top:16px;font-size:13px;color:var(--text-secondary);"
+                data-i18n="export_help">
+                Export your current data to save a backup, or import previously
+                saved data to restore your subathon progress.
+            </p>
+        </div>
+    </div>
+</div>
+
+

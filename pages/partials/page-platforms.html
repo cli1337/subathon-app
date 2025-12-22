@@ -1,0 +1,164 @@
+<div class="page" id="platforms">
+    <header class="page-header">
+        <h1 data-i18n="platforms_title">Platforms</h1>
+        <p class="page-subtitle" data-i18n="platforms_subtitle">
+            Connect to streaming platforms and configure event sources
+        </p>
+    </header>
+    <div class="platforms-grid">
+        <div class="card">
+            <div class="platform-card">
+                <!-- Platform Switcher -->
+                <div class="platform-switcher">
+                    <button class="platform-switch-btn active" data-platform="kick" id="switchKickBtn">
+                        <span>Kick</span>
+                    </button>
+                    <button class="platform-switch-btn" data-platform="twitch" id="switchTwitchBtn">
+                        <span>Twitch</span>
+                    </button>
+                    <div class="platform-switch-indicator" id="platformSwitchIndicator"></div>
+                </div>
+
+                <!-- Kick Platform Content -->
+                <div class="platform-content" id="kickPlatformContent">
+                    <div class="platform-header">
+                        <div class="platform-icon kick-icon">
+                            <img src="./assets/img/kick-512px.png" alt="Kick"
+                                style="width: 28px; height: 28px;">
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <h3>KICK</h3>
+                                <span class="connection-indicator" id="kickConnectionIndicator" title="WebSocket Disconnected"></span>
+                            </div>
+                            <p class="platform-status" id="kickStatus">Not Configured</p>
+                            <p id="kickConfigDisplay"
+                                style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;"></p>
+                        </div>
+                    </div>
+                    <div class="platform-form">
+                    <div class="form-group">
+                        <label>Pusher Region</label>
+                        <input type="text" id="kickPusherRegion" class="input" value="ws-us2"
+                            placeholder="ws-us2">
+                        <p
+                            style="font-size:13px;color:var(--text-secondary);margin-top:6px;">
+                            WebSocket region (usually ws-us2)
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label>Pusher Key</label>
+                        <input type="text" id="kickPusherKey" class="input"
+                            value="32cbd69e4b950bf97679"
+                            placeholder="32cbd69e4b950bf97679">
+                        <p
+                            style="font-size:13px;color:var(--text-secondary);margin-top:6px;">
+                            Kick Pusher key (default provided)
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label>Chatroom ID</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="kickChatroomIdInput" class="input"
+                                style="flex: 1;" placeholder="e.g. 123456">
+                            <button class="btn btn-secondary" id="getChatroomIdBtn">
+                                Get Chatroom ID
+                            </button>
+                        </div>
+                        <p
+                            style="font-size:13px;color:var(--text-secondary);margin-top:6px;">
+                            Enter your Kick username below → click "Get Chatroom ID" →
+                            copy the <code>id</code> from the JSON → paste here.
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label>Kick Username (for getting ID)</label>
+                        <input type="text" id="kickUsernameInput" class="input"
+                            placeholder="yourkickusername">
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-primary" id="saveKickBtn">
+                            Save Configuration
+                        </button>
+                        <button class="btn btn-secondary" id="resetKickBtn">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Twitch Platform Content -->
+                <div class="platform-content hidden" id="twitchPlatformContent">
+                    <div class="platform-header">
+                        <div class="platform-icon twitch-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="width: 28px; height: 28px;">
+                                <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
+                            </svg>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <h3>TWITCH</h3>
+                                <span class="connection-indicator" id="twitchConnectionIndicator" title="WebSocket Disconnected"></span>
+                            </div>
+                            <p class="platform-status" id="twitchStatus">Not Configured</p>
+                            <p id="twitchConfigDisplay"
+                                style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;"></p>
+                        </div>
+                    </div>
+                    <div class="platform-form">
+                        <div class="form-group">
+                            <label>Twitch Username</label>
+                            <input type="text" id="twitchUsernameInput" class="input"
+                                placeholder="yourtwitchusername">
+                            <p
+                                style="font-size:13px;color:var(--text-secondary);margin-top:6px;">
+                                Your Twitch channel username (without @)
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label>OAuth Token</label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="password" id="twitchOAuthInput" class="input"
+                                    style="flex: 1;" placeholder="oauth:xxxxxxxxxxxxx">
+                                <button class="btn btn-secondary" id="getTwitchOAuthBtn">
+                                    Get Token
+                                </button>
+                            </div>
+                            <p
+                                style="font-size:13px;color:var(--text-secondary);margin-top:6px;">
+                                Generate OAuth token at <a href="https://twitchtokengenerator.com/" target="_blank" style="color: var(--twitch-color);">twitchtokengenerator.com</a> (requires chat:read scope)
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label>Channel Name</label>
+                            <input type="text" id="twitchChannelInput" class="input"
+                                placeholder="channelname">
+                            <p
+                                style="font-size:13px;color:var(--text-secondary);margin-top:6px;">
+                                Channel to monitor (usually same as username)
+                            </p>
+                        </div>
+                        <div id="twitchLockedSection" style="display: none;">
+                            <div class="form-group">
+                                <label>Configuration Status</label>
+                                <input type="text" class="input" readonly
+                                    id="twitchConfigStatus">
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-primary" id="saveTwitchBtn">
+                                Save Configuration
+                            </button>
+                            <button class="btn btn-secondary" id="resetTwitchBtn">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Manual event card (commented out in original) is left in index.html if needed -->
+    </div>
+</div>
+
+

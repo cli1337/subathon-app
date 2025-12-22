@@ -3,18 +3,122 @@
   "version": "1.0.0",
   "description": "A powerful Electron-based subathon application supporting multiple streaming platforms including Twitch and KICK, with fully customizable metric tracking.",
   "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cli1337/subathon-app.git"
   },
+  "homepage": "https://github.com/cli1337/subathon-app#readme",
+  "bugs": {
+    "url": "https://github.com/cli1337/subathon-app/issues"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "build:all": "electron-builder --win --mac --linux",
+    "dist": "npm run build",
+    "version:patch": "npm version patch && git push && git push --tags",
+    "version:minor": "npm version minor && git push && git push --tags",
+    "version:major": "npm version major && git push && git push --tags"
+  },
+  "keywords": [
+    "subathon",
+    "twitch",
+    "kick",
+    "streaming",
+    "electron",
+    "overlay",
+    "subscription",
+    "donation"
+  ],
   "author": "cliquant",
   "license": "ISC",
+  "build": {
+    "appId": "com.cli1337.subathon-app",
+    "productName": "Subathon App",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "package.json",
+      "pages/**/*",
+      "scripts/**/*",
+      "node_modules/**/*"
+    ],
+    "extraFiles": [
+      {
+        "from": "pages/assets/img/icon.png",
+        "to": "icon.png"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "pages/assets/img/icon.png",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "pages/assets/img/icon.png",
+      "category": "public.app-category.utilities",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
+      "icon": "pages/assets/img/icon.png",
+      "category": "Utility",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "cli1337",
+      "repo": "subathon-app"
+    }
+  },
+  "devDependencies": {
+    "electron": "^39.2.6",
+    "electron-builder": "^26.0.12"
+  },
   "dependencies": {
     "@gbrlstr/kick-flow": "^1.0.5",
     "axios": "^1.13.2",
     "curl-cffi": "^0.1.49",
-    "electron": "^39.2.6",
     "express": "^5.2.1",
     "js-yaml": "^4.1.1",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "playwright": "^1.57.0",
+    "ws": "^8.18.0"
   }
 }

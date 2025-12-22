@@ -1,0 +1,82 @@
+<div class="page" id="metrics">
+    <header class="page-header">
+        <h1 data-i18n="metrics_config_title">Metrics Configuration</h1>
+        <p class="page-subtitle" data-i18n="metrics_subtitle">
+            Customize what values are tracked and how they increment
+        </p>
+    </header>
+    <div class="metrics-layout">
+        <div class="card">
+            <div class="card-header">
+                <h2 data-i18n="metric_type">Metric Type</h2>
+            </div>
+            <div class="card-content">
+                <div class="form-group">
+                    <label data-i18n="type_label">Type</label>
+                    <select id="metricType" class="input">
+                        <option value="time" data-i18n="unit_time">
+                            Time (HH:MM:SS)
+                        </option>
+                        <option value="distance" data-i18n="unit_distance">
+                            Distance (KM/M)
+                        </option>
+                        <option value="custom" data-i18n="unit_custom">
+                            Custom Unit
+                        </option>
+                    </select>
+                </div>
+                <div id="customUnitSection" class="form-group" style="display:none;">
+                    <label data-i18n="custom_unit_name">Custom Unit Name</label>
+                    <input type="text" id="customUnit"
+                        placeholder="e.g., Points, Stars, etc." class="input">
+                </div>
+                <div class="form-group" style="margin-top:10px;">
+                    <label data-i18n="starting_value">Starting Value</label>
+                    <input type="text" id="startingValue" placeholder="00:00:00 or 0"
+                        class="input">
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h2 data-i18n="event_values">Event Values</h2>
+                <p data-i18n="event_values_desc">
+                    Configure how much each event adds to your metric
+                </p>
+            </div>
+            <div class="card-content">
+                <div class="event-values">
+                    <div class="event-value-item">
+                        <label data-i18n="subscription">Subscription</label>
+                        <input type="number" id="subValue" value="120" class="input">
+                        <span class="unit-label" data-i18n="seconds">seconds</span>
+                    </div>
+                    <div class="event-value-item">
+                        <label data-i18n="gift_sub">Gift Sub</label>
+                        <input type="number" id="giftValue" value="60" class="input">
+                        <span class="unit-label" data-i18n="seconds">seconds</span>
+                    </div>
+                    <div class="event-value-item">
+                        <label data-i18n="bits_per_100">Bits (per 100)</label>
+                        <input type="number" id="bitsValue" value="30" class="input">
+                        <span class="unit-label" data-i18n="seconds">seconds</span>
+                    </div>
+                    <div class="event-value-item">
+                        <label>Donation (per &euro;1)</label>
+                        <input type="number" id="donationValue" value="60"
+                            class="input">
+                        <span class="unit-label">seconds</span>
+                    </div>
+                    <div class="event-value-item">
+                        <label data-i18n="follow">Follow</label>
+                        <input type="number" id="followValue" value="0"
+                            class="input">
+                        <span class="unit-label" data-i18n="seconds">seconds</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

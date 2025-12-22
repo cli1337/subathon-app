@@ -4,67 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Subathon Overlay</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: transparent;
-      overflow: hidden;
-    }
-
-    .overlay-display {
-      text-align: center;
-      padding: 24px;
-      background: rgba(0, 0, 0, 0.8);
-      border-radius: 16px;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-    }
-
-    .overlay-value {
-      font-size: 72px;
-      font-weight: 700;
-      color: #ffffff;
-      font-variant-numeric: tabular-nums;
-      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-      margin-bottom: 8px;
-    }
-
-    .overlay-unit {
-      font-size: 18px;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.7);
-      letter-spacing: 2px;
-    }
-  </style>
+  <link rel="stylesheet" href="./assets/css/overlay.css">
 </head>
 <body>
-  <div class="overlay-display">
+  <div class="overlay-display" id="overlayDisplay">
     <div class="overlay-value" id="overlayValue">00:00:00</div>
     <div class="overlay-unit" id="overlayUnit">TIME</div>
+    <div class="overlay-corner-value" id="overlayCornerValue" style="display: none;"></div>
+    <div class="overlay-gifter-card" id="overlayGifterCard" style="display: none !important;">
+      <div class="overlay-gifter-content">
+        <div class="overlay-gifter-name" id="overlayGifterName">Username</div>
+      </div>
+      <div class="overlay-gifter-amount">
+        <div class="overlay-gifter-value" id="overlayGifterAmount">+00:00:00</div>
+        <div class="overlay-gifter-unit" id="overlayGifterUnit">TIME</div>
+      </div>
+    </div>
   </div>
 
-  <script>
-    const { ipcRenderer } = require('electron');
-
-    const overlayValue = document.getElementById('overlayValue');
-    const overlayUnit = document.getElementById('overlayUnit');
-
-    ipcRenderer.on('overlay-data', (event, data) => {
-      overlayValue.textContent = data.value;
-      overlayUnit.textContent = data.unit;
-    });
-  </script>
+  <script src="./assets/js/overlay.js"></script>
 </body>
 </html>

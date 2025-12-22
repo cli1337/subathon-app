@@ -1,0 +1,120 @@
+<div class="page active" id="dashboard">
+    <header class="page-header">
+        <h1 data-i18n="dashboard_title">Dashboard</h1>
+        <p class="page-subtitle" data-i18n="dashboard_subtitle">Monitor your subathon in real-time</p>
+        <!-- <div class="language-switcher">
+            <button class="lang-btn active" data-lang="en" title="English">
+                <img src="https://flagcdn.com/w20/gb.png" alt="English" style="width: 20px; height: 15px;">
+            </button>
+            <button class="lang-btn disabled" data-lang="lv" title="Latvie&scaron;u" disabled>
+                <img src="https://flagcdn.com/w20/white.png" alt="Latvian" style="width: 20px; height: 15px;">
+            </button>
+        </div> -->
+    </header>
+    <div class="dashboard-grid">
+        <div class="card span-2">
+            <div class="card-header">
+                <h2 data-i18n="current_value">Current Value</h2>
+                <div class="card-actions">
+                    <button class="btn btn-icon" id="startBtn" data-i18n-title="start">
+                        <svg viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                    </button>
+                    <button class="btn btn-icon" id="pauseBtn" disabled data-i18n-title="pause">
+                        <svg viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                            <rect x="6" y="4" width="4" height="16"></rect>
+                            <rect x="14" y="4" width="4" height="16"></rect>
+                        </svg>
+                    </button>
+                    <button class="btn btn-icon" id="editValueBtn" title="Edit value" data-i18n-title="edit_value">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 20h9"></path>
+                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L9 17l-4 1 1-4 10.5-10.5z"></path>
+                        </svg>
+                    </button>
+                    <button class="btn btn-icon" id="resetBtn" data-i18n-title="reset">
+                        <svg viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                            <polyline points="1 4 1 10 7 10"></polyline>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                        </svg>
+                    </button>
+                    <button class="btn btn-icon" id="toggleReducerBtn" title="Reducer OFF – Click to enable"
+                        style="position: relative; min-width: 36px; min-height: 36px;">
+                        <svg id="reducerBtnIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2"
+                            style="width: 18px; height: 18px; transition: all 0.3s; display: block;">
+                            <path
+                                d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="main-display" id="mainDisplay">00:00:00</div>
+                <div class="display-unit" id="displayUnit">TIME</div>
+                <div class="corner-value" id="cornerValueDisplay" style="display: none;"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h2 data-i18n="total_events">Total Events</h2>
+            </div>
+            <div class="card-content">
+                <div class="stat-value" id="totalEvents">0</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h2 data-i18n="value_added">Value Added</h2>
+            </div>
+            <div class="card-content">
+                <div class="stat-value" id="valueAdded">+00:00:00</div>
+            </div>
+        </div>
+        <div class="card" id="dashboardGifterCard" style="display: none;">
+            <div class="gifter-card">
+                <div class="gifter-icon">
+                    <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <div class="gifter-content">
+                    <div class="gifter-label">Latest Gifter</div>
+                    <div class="gifter-name" id="dashboardGifterName">Username</div>
+                </div>
+                <div class="gifter-amount">
+                    <div class="gifter-value" id="dashboardGifterAmount">+00:00:00</div>
+                    <div class="gifter-unit" id="dashboardGifterAmountUnit">TIME</div>
+                </div>
+            </div>
+        </div>
+        <div class="card span-2" id="recentEventsCard">
+            <div class="card-header">
+                <h2 data-i18n="recent_events">Recent Events</h2>
+                <div class="card-actions">
+                    <button class="btn btn-icon" id="toggleEventsBtn" title="Hide events">
+                        <svg viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <button class="btn btn-icon" id="clearEventsBtn" title="Clear Events">
+                        <svg viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="card-content" id="recentEventsContent">
+                <div class="events-list" id="eventsList">
+                    <p style="text-align:center;color:var(--text-secondary);padding:24px;">No events yet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
