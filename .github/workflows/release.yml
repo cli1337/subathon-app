@@ -24,16 +24,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       
-      - name: Cache Electron
+      - name: Cache Electron and tools
         uses: actions/cache@v4
         with:
           path: |
             ${{ runner.temp }}/electron-cache
             ~/.cache/electron
             ~/.cache/electron-builder
-          key: electron-${{ runner.os }}-v39.2.6
+            ${{ runner.temp }}/electron-builder-cache
+          key: electron-tools-${{ runner.os }}-v39.2.6
           restore-keys: |
-            electron-${{ runner.os }}-
+            electron-tools-${{ runner.os }}-
       
       - name: Build application
         run: pnpm run build:win -- --publish never
@@ -42,6 +43,9 @@ jobs:
           ELECTRON_CACHE: ${{ runner.temp }}/electron-cache
           ELECTRON_GET_USE_PROXY: false
           ELECTRON_MIRROR: https://npmmirror.com/mirrors/electron/
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+          WIN_CSC_LINK: ""
+          WIN_CSC_KEY_PASSWORD: ""
         timeout-minutes: 30
       
       - name: Upload artifacts
