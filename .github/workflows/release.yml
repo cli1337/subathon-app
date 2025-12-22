@@ -36,6 +36,27 @@ jobs:
           restore-keys: |
             electron-tools-${{ runner.os }}-
       
+      - name: Pre-download winCodeSign tool
+        run: |
+          $toolPath = "$env:LOCALAPPDATA\electron-builder\Cache\winCodeSign"
+          New-Item -ItemType Directory -Force -Path $toolPath | Out-Null
+          $url = "https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z"
+          $output = "$toolPath\winCodeSign-2.6.0.7z"
+          Write-Host "Downloading winCodeSign tool..."
+          for ($i = 1; $i -le 5; $i++) {
+            try {
+              Invoke-WebRequest -Uri $url -OutFile $output -TimeoutSec 60
+              Write-Host "Download successful!"
+              break
+            } catch {
+              Write-Host "Attempt $i failed: $_"
+              if ($i -eq 5) { Write-Host "All attempts failed, continuing anyway..." }
+              Start-Sleep -Seconds 2
+            }
+          }
+        continue-on-error: true
+        timeout-minutes: 5
+      
       - name: Build application
         run: pnpm run build:win -- --publish never
         env:

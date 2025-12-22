@@ -16,7 +16,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "electron-builder --win",
     "build:win": "electron-builder --win",
-    "build:win:local": "electron-builder --win --config.win.sign=null",
+    "build:win:local": "set CSC_IDENTITY_AUTO_DISCOVERY=false && electron-builder --win --config.win.target=portable",
+    "build:portable": "electron-builder --win portable --x64",
     "dist": "npm run build",
     "version:patch": "npm version patch && git push && git push --tags",
     "version:minor": "npm version minor && git push && git push --tags",
@@ -71,8 +72,8 @@
           ]
         }
       ],
-      "icon": "pages/assets/img/icon.png",
-      "artifactName": "${productName}-${version}-${arch}.${ext}"
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "forceCodeSigning": false
     },
     "mac": {
       "target": [
