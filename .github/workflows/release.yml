@@ -25,9 +25,10 @@ jobs:
         run: pnpm install --frozen-lockfile
       
       - name: Build application
-        run: pnpm run build:win
+        run: pnpm run build:win -- --publish never
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        timeout-minutes: 30
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
