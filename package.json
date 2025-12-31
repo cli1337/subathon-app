@@ -1,6 +1,6 @@
 {
   "name": "subathon-app",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A powerful Electron-based subathon application supporting multiple streaming platforms including Twitch and KICK, with fully customizable metric tracking.",
   "main": "main.js",
   "repository": {
