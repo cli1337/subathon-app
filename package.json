@@ -38,6 +38,7 @@
   "build": {
     "appId": "com.cli1337.subathon-app",
     "productName": "Subathon App",
+    "npmRebuild": false,
     "directories": {
       "output": "dist",
       "buildResources": "build"
