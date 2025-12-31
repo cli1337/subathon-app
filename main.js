@@ -93,12 +93,66 @@ const defaultConfig = {
 		channel: ""
 	},
 
+	streamlabs: {
+		socketToken: ""
+	},
+
+	donationalerts: {
+		accessToken: ""
+	},
+
 	metricState: {
 		currentValue: 0,
+		startingValue: 0,
 		metricType: "time",
 		customUnit: "",
 		totalEvents: 0,
-		valueAdded: 0
+		valueAdded: 0,
+		distanceDisplayMode: "meters"
+	},
+
+	eventValues: {
+		kick: {
+			subValue: 120,
+			giftValue: 60,
+			subEnabled: true,
+			giftEnabled: true,
+			platformEnabled: true
+		},
+		twitch: {
+			subValue: 120,
+			giftValue: 60,
+			bitsValue: 30,
+			subEnabled: true,
+			giftEnabled: true,
+			bitsEnabled: true,
+			platformEnabled: true
+		},
+		streamlabs: {
+			donationCurrencies: {},
+			donationEnabled: true,
+			platformEnabled: true
+		},
+		donationalerts: {
+			donationCurrencies: {},
+			donationEnabled: true,
+			platformEnabled: true
+		}
+	},
+
+	platforms: {
+		kick: {
+			enabled: true
+		},
+		twitch: {
+			enabled: true
+		},
+		streamlabs: {
+			enabled: true
+		},
+		donationalerts: {
+			enabled: true
+		}
 	},
 
 	reducer: {
@@ -166,9 +220,36 @@ function loadProfileConfig(profileId) {
 		}
 		if (saved.overlay) Object.assign(profileConfig.overlay, saved.overlay);
 		if (saved.kick) Object.assign(profileConfig.kick, saved.kick);
+		if (saved.twitch) Object.assign(profileConfig.twitch, saved.twitch);
+		if (saved.streamlabs) Object.assign(profileConfig.streamlabs, saved.streamlabs);
+		if (saved.donationalerts) Object.assign(profileConfig.donationalerts, saved.donationalerts);
 		if (saved.metricState) Object.assign(profileConfig.metricState, saved.metricState);
 		if (saved.reducer) Object.assign(profileConfig.reducer, saved.reducer);
 		if (saved.settings) Object.assign(profileConfig.settings, saved.settings);
+		if (saved.eventValues) {
+			if (!profileConfig.eventValues) profileConfig.eventValues = {};
+			if (saved.eventValues.kick) {
+				profileConfig.eventValues.kick = { ...profileConfig.eventValues.kick, ...saved.eventValues.kick };
+			}
+			if (saved.eventValues.twitch) {
+				profileConfig.eventValues.twitch = { ...profileConfig.eventValues.twitch, ...saved.eventValues.twitch };
+			}
+			if (saved.eventValues.streamlabs) {
+				profileConfig.eventValues.streamlabs = {
+					donationCurrencies: { ...(profileConfig.eventValues.streamlabs?.donationCurrencies || {}), ...(saved.eventValues.streamlabs.donationCurrencies || {}) },
+					donationEnabled: saved.eventValues.streamlabs.donationEnabled !== undefined ? saved.eventValues.streamlabs.donationEnabled : true,
+					platformEnabled: saved.eventValues.streamlabs.platformEnabled !== undefined ? saved.eventValues.streamlabs.platformEnabled : true
+				};
+			}
+			if (saved.eventValues.donationalerts) {
+				profileConfig.eventValues.donationalerts = {
+					donationCurrencies: { ...(profileConfig.eventValues.donationalerts?.donationCurrencies || {}), ...(saved.eventValues.donationalerts.donationCurrencies || {}) },
+					donationEnabled: saved.eventValues.donationalerts.donationEnabled !== undefined ? saved.eventValues.donationalerts.donationEnabled : true,
+					platformEnabled: saved.eventValues.donationalerts.platformEnabled !== undefined ? saved.eventValues.donationalerts.platformEnabled : true
+				};
+			}
+		}
+		if (saved.platforms) Object.assign(profileConfig.platforms, saved.platforms);
 		if (saved.events) profileConfig.events = saved.events || [];
 		return profileConfig;
 	} catch (err) {
@@ -206,10 +287,48 @@ ipcMain.on("save-config", (event, data) => {
 	}
 	if (data.kick) Object.assign(config.kick, data.kick);
 	if (data.twitch) Object.assign(config.twitch, data.twitch);
+	if (data.streamlabs) Object.assign(config.streamlabs, data.streamlabs);
+	if (data.donationalerts) Object.assign(config.donationalerts, data.donationalerts);
 	if (data.metricState) Object.assign(config.metricState, data.metricState);
 	if (data.reducer) Object.assign(config.reducer, data.reducer);
 	if (data.overlay) Object.assign(config.overlay, data.overlay);
 	if (data.settings) Object.assign(config.settings, data.settings);
+	if (data.eventValues) {
+		if (!config.eventValues) config.eventValues = {};
+		if (data.eventValues.kick) {
+			if (!config.eventValues.kick) config.eventValues.kick = {};
+			Object.assign(config.eventValues.kick, data.eventValues.kick);
+		}
+		if (data.eventValues.twitch) {
+			if (!config.eventValues.twitch) config.eventValues.twitch = {};
+			Object.assign(config.eventValues.twitch, data.eventValues.twitch);
+		}
+		if (data.eventValues.streamlabs) {
+			if (!config.eventValues.streamlabs) config.eventValues.streamlabs = { donationCurrencies: {} };
+			if (data.eventValues.streamlabs.donationCurrencies) {
+				Object.assign(config.eventValues.streamlabs.donationCurrencies, data.eventValues.streamlabs.donationCurrencies);
+			}
+			if (data.eventValues.streamlabs.donationEnabled !== undefined) {
+				config.eventValues.streamlabs.donationEnabled = data.eventValues.streamlabs.donationEnabled;
+			}
+			if (data.eventValues.streamlabs.platformEnabled !== undefined) {
+				config.eventValues.streamlabs.platformEnabled = data.eventValues.streamlabs.platformEnabled;
+			}
+		}
+		if (data.eventValues.donationalerts) {
+			if (!config.eventValues.donationalerts) config.eventValues.donationalerts = { donationCurrencies: {} };
+			if (data.eventValues.donationalerts.donationCurrencies) {
+				Object.assign(config.eventValues.donationalerts.donationCurrencies, data.eventValues.donationalerts.donationCurrencies);
+			}
+			if (data.eventValues.donationalerts.donationEnabled !== undefined) {
+				config.eventValues.donationalerts.donationEnabled = data.eventValues.donationalerts.donationEnabled;
+			}
+			if (data.eventValues.donationalerts.platformEnabled !== undefined) {
+				config.eventValues.donationalerts.platformEnabled = data.eventValues.donationalerts.platformEnabled;
+			}
+		}
+	}
+	if (data.platforms) Object.assign(config.platforms, data.platforms);
 	if (data.events) config.events = data.events;
 
 	saveConfig();
@@ -292,6 +411,11 @@ ipcMain.handle("load-config", () => {
 	};
 	if (config.events) response.events = config.events;
 	return response;
+});
+
+ipcMain.handle("get-app-version", () => {
+	const packageJson = require("./package.json");
+	return packageJson.version;
 });
 
 ipcMain.on("load-config", (event) => {
@@ -534,13 +658,11 @@ function createMainWindow() {
 		showMainWindow();
 	});
 
-	// Handle external links - open in default browser
 	mainWindow.webContents.setWindowOpenHandler(({ url }) => {
 		shell.openExternal(url);
 		return { action: "deny" };
 	});
 
-	// Prevent navigation to external URLs
 	mainWindow.webContents.on("will-navigate", (event, navigationUrl) => {
 		const parsedUrl = new URL(navigationUrl);
 		if (parsedUrl.origin !== `file://${__dirname.replace(/\\/g, "/")}`) {

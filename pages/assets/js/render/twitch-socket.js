@@ -4,7 +4,6 @@ const { addEvent } = require("./events");
 const { showToast } = require("./toast");
 const { updateConnectionStatus } = require("./display");
 
-// Check if we're in development mode (defaults to true for safety)
 const isDev = typeof window === 'undefined' || window.DEV_MODE !== false;
 
 let ws = null;
@@ -42,7 +41,7 @@ function cleanupSocket() {
 }
 
 function scheduleReconnect() {
-  if (reconnectTimeout || !state.twitch?.configured) return;
+  if (reconnectTimeout || !state.twitch?.configured || state.platforms?.twitch?.enabled === false) return;
   reconnectTimeout = setTimeout(() => {
     reconnectTimeout = null;
     connectTwitchSocket();
@@ -94,7 +93,9 @@ function handleTwitchMessage(raw) {
       const subPlan = msg.tags["msg-param-sub-plan"] || "";
       
       if (msg.raw.includes("msg-id=sub") || msg.raw.includes("msg-id=resub")) {
-        const valuePerSub = state.config.subValue || 120;
+        const twitchValues = state.config.eventValues?.twitch || {};
+        if (twitchValues.platformEnabled === false) return;
+        const valuePerSub = twitchValues.subValue || 120;
         addEvent("Subscription", "Twitch", valuePerSub, displayName || userId);
         return;
       }
@@ -103,7 +104,10 @@ function handleTwitchMessage(raw) {
     if (msg.raw.includes("msg-id=subgift") || msg.raw.includes("msg-id=anonsubgift")) {
       const giftCount = parseInt(msg.tags["msg-param-gift-months"] || "1");
       const gifterName = displayName || msg.tags["msg-param-sender-name"] || "Anonymous";
-      const valuePerGift = state.config.giftValue || 60;
+      const twitchValues = state.config.eventValues?.twitch || {};
+      if (twitchValues.platformEnabled === false) return;
+      if (twitchValues.giftEnabled === false) return;
+      const valuePerGift = twitchValues.giftValue || 60;
       const totalValue = valuePerGift * giftCount;
       
       addEvent(`Gift Subscription${giftCount > 1 ? "s" : ""} (${giftCount}x)`, "Twitch", totalValue, gifterName);
@@ -116,7 +120,10 @@ function handleTwitchMessage(raw) {
     const displayName = msg.tags["display-name"] || "";
     
     if (msgId === "sub" || msgId === "resub") {
-      const valuePerSub = state.config.subValue || 120;
+      const twitchValues = state.config.eventValues?.twitch || {};
+      if (twitchValues.platformEnabled === false) return;
+      if (twitchValues.subEnabled === false) return;
+      const valuePerSub = twitchValues.subValue || 120;
       addEvent("Subscription", "Twitch", valuePerSub, displayName);
       return;
     }
@@ -124,7 +131,10 @@ function handleTwitchMessage(raw) {
     if (msgId === "subgift" || msgId === "anonsubgift") {
       const giftCount = parseInt(msg.tags["msg-param-gift-months"] || "1");
       const gifterName = displayName || msg.tags["msg-param-sender-name"] || "Anonymous";
-      const valuePerGift = state.config.giftValue || 60;
+      const twitchValues = state.config.eventValues?.twitch || {};
+      if (twitchValues.platformEnabled === false) return;
+      if (twitchValues.giftEnabled === false) return;
+      const valuePerGift = twitchValues.giftValue || 60;
       const totalValue = valuePerGift * giftCount;
       
       addEvent(`Gift Subscription${giftCount > 1 ? "s" : ""} (${giftCount}x)`, "Twitch", totalValue, gifterName);
@@ -134,6 +144,11 @@ function handleTwitchMessage(raw) {
 }
 
 function connectTwitchSocket() {
+  if (state.platforms?.twitch?.enabled === false) {
+    cleanupSocket();
+    return;
+  }
+
   const channel = getChannel();
   const oauth = getOAuth();
   const username = getUsername();

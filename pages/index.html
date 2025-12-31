@@ -50,11 +50,8 @@
                     </svg> <span data-i18n="platforms_title">Platforms</span></button> <button class="nav-item" data-page="profiles"><svg class="nav-icon" viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
-                    </svg> <span>Profiles</span></button> <button class="nav-item" data-page="metrics"><svg class="nav-icon" viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="9" y1="9" x2="15" y2="9"></line>
-                        <line x1="9" y1="15" x2="15" y2="15"></line>
-                        <line x1="12" y1="3" x2="12" y2="21"></line>
+                    </svg> <span>Profiles</span></button> <button class="nav-item" data-page="metrics"><svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M1 0 0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.27 3.27a.997.997 0 0 0 1.414 0l1.586-1.586a.997.997 0 0 0 0-1.414l-3.27-3.27a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3q0-.405-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814zm9.646 10.646a.5.5 0 0 1 .708 0l2.914 2.915a.5.5 0 0 1-.707.707l-2.915-2.914a.5.5 0 0 1 0-.708M3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026z"/>
                     </svg> <span data-i18n="metrics_title">Metrics</span></button> <button class="nav-item" data-page="overlay"><svg class="nav-icon" viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
                         <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
                         <line x1="7" y1="2" x2="7" y2="22"></line>
@@ -67,9 +64,8 @@
                     </svg> <span data-i18n="overlay_title">Overlay</span></button> <button class="nav-item" data-page="reducer"><svg class="nav-icon" viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
                         <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                     </svg> <span>Reducer</span></button> <button class="nav-item" data-page="settings"><svg class="nav-icon" viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
                         <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M12 1v6m0 6v6m0-18a9 9 0 1 1 0 18 9 9 0 0 1 0-18z"></path>
-                        <path d="M16.24 7.76l-4.24 4.24m0 0l-4.24 4.24M7.76 7.76l4.24 4.24"></path>
                     </svg> <span data-i18n="settings_title">Settings</span></button>
             </nav>
             <div class="sidebar-footer">
@@ -99,6 +95,28 @@
             </div>
         </div>
     </div>
+    <div class="modal" id="adjustValueModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="adjustValueModalTitle">Adjust Value</h2>
+                <button class="btn btn-icon" id="closeAdjustModalBtn"><svg viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg></button>
+            </div>
+            <div class="modal-body">
+                <label id="adjustValueLabel">Amount</label>
+                <input type="text" id="adjustValueInput" class="input" placeholder="00:00:00 or 0">
+                <p style="font-size:13px;color:var(--text-secondary);margin-top:6px;" id="adjustValueHint">
+                    Enter the amount to adjust
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelAdjustBtn">Cancel</button>
+                <button class="btn btn-primary" id="confirmAdjustBtn">Apply</button>
+            </div>
+        </div>
+    </div>
     <div class="modal" id="resetModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -119,6 +137,63 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" id="cancelResetBtn">Cancel</button> <button class="btn btn-danger" id="confirmResetBtn">Reset All Values</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="clearEventsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Clear Events</h2>
+                <button class="btn btn-icon" id="closeClearEventsModalBtn"><svg viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to clear all events? This will remove all event history.</p>
+                <p style="color: var(--danger-color); font-weight: 600; margin-top: 12px;">This action cannot be undone!</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelClearEventsBtn">Cancel</button>
+                <button class="btn btn-danger" id="confirmClearEventsBtn">Clear All Events</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="deleteProfileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Delete Profile</h2>
+                <button class="btn btn-icon" id="closeDeleteProfileModalBtn"><svg viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteProfileMessage">Are you sure you want to delete this profile?</p>
+                <p style="color: var(--danger-color); font-weight: 600; margin-top: 12px;">This action cannot be undone!</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelDeleteProfileBtn">Cancel</button>
+                <button class="btn btn-danger" id="confirmDeleteProfileBtn">Delete Profile</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="deleteEventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Delete Event</h2>
+                <button class="btn btn-icon" id="closeDeleteEventModalBtn"><svg viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteEventMessage">Are you sure you want to delete this event?</p>
+                <p style="color: var(--danger-color); font-weight: 600; margin-top: 12px;">This action cannot be undone!</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelDeleteEventBtn">Cancel</button>
+                <button class="btn btn-danger" id="confirmDeleteEventBtn">Delete Event</button>
             </div>
         </div>
     </div>

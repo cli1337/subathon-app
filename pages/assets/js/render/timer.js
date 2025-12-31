@@ -109,6 +109,10 @@ function stopReducer() {
 function startTimer() {
   if (state.isRunning) return;
 
+  if (state.currentValue === 0 && state.startingValue > 0) {
+    state.currentValue = state.startingValue;
+  }
+
   state.isRunning = true;
   state.isPaused = false;
   const startBtn = document.getElementById("startBtn");

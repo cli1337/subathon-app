@@ -19,22 +19,28 @@ const kickConnectionIndicator = document.getElementById("kickConnectionIndicator
 function refreshKickUI() {
   const hasConfig = !!state.kick.chatroomId;
   const isConnected = hasConfig && getConnectionStatus();
+  const isEnabled = state.platforms?.kick?.enabled !== false;
 
   if (hasConfig) {
     kickStatus.textContent = "Configured";
     kickStatus.classList.add("connected");
     kickConfigDisplay.textContent = `Region: ${state.kick.pusherRegion} | Key: ${state.kick.pusherKey} | Chatroom: ${state.kick.chatroomId}`;
     kickPusherRegion.disabled = kickPusherKey.disabled = kickUsernameInput.disabled = kickChatroomIdInput.disabled = getChatroomIdBtn.disabled = true;
-    saveKickBtn.style.display = "none";
   } else {
     kickStatus.textContent = "Not Configured";
     kickStatus.classList.remove("connected");
     kickConfigDisplay.textContent = "";
     kickPusherRegion.disabled = kickPusherKey.disabled = kickUsernameInput.disabled = kickChatroomIdInput.disabled = getChatroomIdBtn.disabled = false;
-    saveKickBtn.style.display = "block";
   }
 
-  // Update connection indicator
+  if (saveKickBtn) saveKickBtn.style.display = "block";
+  if (resetKickBtn) resetKickBtn.style.display = "block";
+
+  const kickPlatformEnabledToggle = document.getElementById("kickPlatformEnabled");
+  if (kickPlatformEnabledToggle) {
+    kickPlatformEnabledToggle.checked = isEnabled;
+  }
+
   if (kickConnectionIndicator) {
     if (isConnected) {
       kickConnectionIndicator.classList.add("connected");
@@ -96,21 +102,42 @@ if (saveKickBtn) {
 
 if (resetKickBtn) {
   resetKickBtn.addEventListener("click", () => {
-    if (confirm("Reset Kick configuration? This will clear all settings.")) {
-      state.kick.pusherRegion = "ws-us2";
-      state.kick.pusherKey = "32cbd69e4b950bf97679";
-      state.kick.chatroomId = "";
-      state.kick.username = "";
-      state.kick.configured = false;
-      saveAllConfig();
-      refreshKickUI();
-      updateConnectionStatus();
-      showToast("Kick config reset to defaults", "info");
+    const resetModal = document.getElementById("resetPlatformModal");
+    const resetMessage = document.getElementById("resetPlatformMessage");
+    
+    if (resetModal && resetMessage) {
+      resetMessage.textContent = "Are you sure you want to reset Kick configuration? This will clear all settings.";
+      
+      resetModal.dataset.resetFunction = "kick";
+      
+      resetModal.classList.add("show");
     }
   });
 }
 
 setRefreshUICallback(refreshKickUI);
+
+function initKickPlatformToggle() {
+  const kickPlatformEnabledToggle = document.getElementById("kickPlatformEnabled");
+  if (kickPlatformEnabledToggle) {
+    kickPlatformEnabledToggle.checked = state.platforms?.kick?.enabled !== false;
+    kickPlatformEnabledToggle.onchange = null;
+    kickPlatformEnabledToggle.addEventListener("change", () => {
+      state.platforms.kick.enabled = kickPlatformEnabledToggle.checked;
+      saveAllConfig();
+      const { cleanupKickSocket } = require("./kick-socket");
+      if (!kickPlatformEnabledToggle.checked) {
+        cleanupKickSocket();
+      } else if (state.kick.configured) {
+        const { connectKickSocket } = require("./kick-socket");
+        connectKickSocket();
+      }
+      refreshKickUI();
+    });
+  }
+}
+
+initKickPlatformToggle();
 
 module.exports = { refreshKickUI };
 

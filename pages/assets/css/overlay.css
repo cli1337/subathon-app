@@ -93,7 +93,6 @@ body {
   opacity: 1;
 }
 
-/* Gifter card animations */
 .overlay-gifter-card.anim-slideUp.show {
   animation: slideUpGifter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   transform-origin: center bottom;

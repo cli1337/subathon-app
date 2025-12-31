@@ -126,8 +126,10 @@ function updateStats() {
       const formatted = formatValue(state.valueAdded);
       valueAddedEl.textContent = formatted.startsWith("-") ? formatted : `+${formatted}`;
     } else {
+      const { getUnitDisplay } = require("./utils");
       const val = Math.round(state.valueAdded * 100) / 100;
-      valueAddedEl.textContent = val >= 0 ? `+${val.toFixed(2)}` : val.toFixed(2);
+      const unit = getUnitDisplay();
+      valueAddedEl.textContent = val >= 0 ? `+${val.toFixed(2)} ${unit}` : `${val.toFixed(2)} ${unit}`;
     }
   }
 
@@ -172,10 +174,62 @@ function updateConnectionStatus() {
 
 function updateUnitLabels() {
   const unitLabels = document.querySelectorAll(".unit-label");
+  const inlineUnitLabels = document.querySelectorAll(".unit-label-inline");
+  let unitText = "units";
+  if (state.metricType === "time") {
+    unitText = "seconds";
+  } else if (state.metricType === "distance") {
+    unitText = "meters";
+  } else {
+    unitText = state.customUnit || "units";
+  }
+  
   unitLabels.forEach(el => {
-    if (state.metricType === "time") el.textContent = "seconds";
-    else if (state.metricType === "distance") el.textContent = "meters";
-    else el.textContent = state.customUnit || "units";
+    el.textContent = unitText;
+  });
+  
+  inlineUnitLabels.forEach(el => {
+    const inputWrapper = el.parentElement;
+    if (!inputWrapper) {
+      el.textContent = unitText;
+      return;
+    }
+    
+    let input = inputWrapper.querySelector("input");
+    if (!input && inputWrapper.querySelector(".number-input-wrapper")) {
+      input = inputWrapper.querySelector(".number-input-wrapper input");
+    }
+
+    const currencySplit = inputWrapper.closest(".currency-input-split");
+    if (!input && currencySplit) {
+      input = currencySplit.querySelector(".number-input-wrapper input") || currencySplit.querySelector("input");
+    }
+    
+    if (!input && inputWrapper.classList.contains("currency-input-split")) {
+      input = inputWrapper.querySelector(".number-input-wrapper input") || inputWrapper.querySelector("input");
+    }
+    
+    if (!input || !input.id) {
+      if (inputWrapper.classList.contains("currency-input-split") || inputWrapper.closest(".currency-input-split")) {
+        el.textContent = unitText;
+        return;
+      }
+      el.textContent = unitText;
+      return;
+    }
+    
+    const inputId = input.id;
+    const isSubOrGift = inputId.includes("SubValue") || inputId.includes("GiftValue");
+    const isCurrencyMultiplier = inputId.includes("streamlabsMultiplier_") || inputId.includes("donationalertsMultiplier_");
+    const isCurrencyTier = inputId.includes("TierValue_");
+    
+    if (isSubOrGift) {
+      el.textContent = "seconds";
+    } else if (isCurrencyMultiplier || isCurrencyTier) {
+      el.textContent = unitText;
+    } else {
+      el.textContent = unitText;
+    }
   });
 }
 

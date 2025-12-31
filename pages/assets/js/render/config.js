@@ -16,13 +16,23 @@ function saveAllConfig() {
       oauth: state.twitch.oauth,
       channel: state.twitch.channel
     },
+    streamlabs: {
+      socketToken: state.streamlabs.socketToken || ""
+    },
+    donationalerts: {
+      accessToken: state.donationalerts?.accessToken || "",
+      configured: state.donationalerts?.configured || false
+    },
     metricState: {
       currentValue: state.currentValue,
+      startingValue: state.startingValue,
       metricType: state.metricType,
       customUnit: state.customUnit,
       totalEvents: state.totalEvents,
-      valueAdded: state.valueAdded
+      valueAdded: state.valueAdded,
+      distanceDisplayMode: state.distanceDisplayMode || "meters"
     },
+    eventValues: JSON.parse(JSON.stringify(state.config.eventValues || {})),
     reducer: state.reducer,
     settings: state.settings,
     overlay: {
@@ -36,6 +46,7 @@ function saveAllConfig() {
       showValueWhenPaused: state.overlay.showValueWhenPaused !== false,
       showValueWhenStopped: state.overlay.showValueWhenStopped !== false
     },
+    platforms: state.platforms,
     events: state.events
   });
 }

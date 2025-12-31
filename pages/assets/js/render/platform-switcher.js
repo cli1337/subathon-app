@@ -1,60 +1,80 @@
 const { refreshKickUI } = require("./kick");
 const { refreshTwitchUI } = require("./twitch");
+const { refreshStreamlabsUI } = require("./streamlabs");
+const { refreshDonationalertsUI } = require("./donationalerts");
 
 let currentPlatform = "kick";
 
 function initPlatformSwitcher() {
   const switchKickBtn = document.getElementById("switchKickBtn");
   const switchTwitchBtn = document.getElementById("switchTwitchBtn");
+  const switchStreamlabsBtn = document.getElementById("switchStreamlabsBtn");
+  const switchDonationalertsBtn = document.getElementById("switchDonationalertsBtn");
   const kickContent = document.getElementById("kickPlatformContent");
   const twitchContent = document.getElementById("twitchPlatformContent");
+  const streamlabsContent = document.getElementById("streamlabsPlatformContent");
+  const donationalertsContent = document.getElementById("donationalertsPlatformContent");
   const indicator = document.getElementById("platformSwitchIndicator");
 
-  if (!switchKickBtn || !switchTwitchBtn || !kickContent || !twitchContent || !indicator) {
+  if (!switchKickBtn || !switchTwitchBtn || !switchStreamlabsBtn || !switchDonationalertsBtn || !kickContent || !twitchContent || !streamlabsContent || !donationalertsContent || !indicator) {
     return;
   }
 
   function switchPlatform(platform) {
     if (platform === currentPlatform) return;
 
-    const buttons = [switchKickBtn, switchTwitchBtn];
-    const contents = [kickContent, twitchContent];
+    const buttons = [switchKickBtn, switchTwitchBtn, switchStreamlabsBtn, switchDonationalertsBtn];
+    const contents = [kickContent, twitchContent, streamlabsContent, donationalertsContent];
     
     buttons.forEach(btn => {
-      if (btn.dataset.platform === platform) {
+      if (btn && btn.dataset.platform === platform) {
         btn.classList.add("active");
-      } else {
+      } else if (btn) {
         btn.classList.remove("active");
       }
     });
 
-    const activeBtn = platform === "kick" ? switchKickBtn : switchTwitchBtn;
-    const btnRect = activeBtn.getBoundingClientRect();
-    const containerRect = activeBtn.parentElement.getBoundingClientRect();
-    
-    indicator.style.width = `${btnRect.width}px`;
-    indicator.style.left = `${btnRect.left - containerRect.left}px`;
-
-    if (platform === "kick") {
-      twitchContent.classList.add("hidden");
-      setTimeout(() => {
-        kickContent.classList.remove("hidden");
-        refreshKickUI();
-      }, 150);
-    } else {
-      kickContent.classList.add("hidden");
-      setTimeout(() => {
-        twitchContent.classList.remove("hidden");
-        refreshTwitchUI();
-      }, 150);
+    const activeBtn = buttons.find(btn => btn && btn.dataset.platform === platform);
+    if (activeBtn) {
+      const btnRect = activeBtn.getBoundingClientRect();
+      const containerRect = activeBtn.parentElement.getBoundingClientRect();
+      
+      indicator.style.width = `${btnRect.width}px`;
+      indicator.style.left = `${btnRect.left - containerRect.left}px`;
     }
+
+    contents.forEach(content => {
+      if (content) {
+        if (content.id === `${platform}PlatformContent`) {
+          content.classList.remove("hidden");
+        } else {
+          content.classList.add("hidden");
+        }
+      }
+    });
+
+    setTimeout(() => {
+      if (platform === "kick") {
+        refreshKickUI();
+      } else if (platform === "twitch") {
+        refreshTwitchUI();
+      } else if (platform === "streamlabs") {
+        refreshStreamlabsUI();
+      } else if (platform === "donationalerts") {
+        refreshDonationalertsUI();
+      }
+    }, 150);
 
     currentPlatform = platform;
   }
 
   switchKickBtn.classList.add("active");
   switchTwitchBtn.classList.remove("active");
+  switchStreamlabsBtn.classList.remove("active");
+  switchDonationalertsBtn.classList.remove("active");
   twitchContent.classList.add("hidden");
+  streamlabsContent.classList.add("hidden");
+  donationalertsContent.classList.add("hidden");
   kickContent.classList.remove("hidden");
   currentPlatform = "kick";
 
@@ -76,6 +96,8 @@ function initPlatformSwitcher() {
 
   switchKickBtn.addEventListener("click", () => switchPlatform("kick"));
   switchTwitchBtn.addEventListener("click", () => switchPlatform("twitch"));
+  switchStreamlabsBtn.addEventListener("click", () => switchPlatform("streamlabs"));
+  switchDonationalertsBtn.addEventListener("click", () => switchPlatform("donationalerts"));
 }
 
 function delayedInit() {

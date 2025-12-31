@@ -6,6 +6,7 @@ const state = {
   currentProfileId: "default",
   profiles: {},
   currentValue: 0,
+  startingValue: 0,
   isRunning: false,
   isPaused: false,
   metricType: "time",
@@ -14,15 +15,40 @@ const state = {
   totalEvents: 0,
   valueAdded: 0,
   config: {
-    subValue: 120,
-    giftValue: 60,
-    bitsValue: 30,
-    donationValue: 60,
-    followValue: 0
+    eventValues: {
+      kick: {
+        subValue: 120,
+        giftValue: 60,
+        subEnabled: true,
+        giftEnabled: true,
+        platformEnabled: true
+      },
+      twitch: {
+        subValue: 120,
+        giftValue: 60,
+        bitsValue: 30,
+        subEnabled: true,
+        giftEnabled: true,
+        bitsEnabled: true,
+        platformEnabled: true
+      },
+      streamlabs: {
+        donationCurrencies: {},
+        donationEnabled: true,
+        platformEnabled: true
+      },
+      donationalerts: {
+        donationCurrencies: {},
+        donationEnabled: true,
+        platformEnabled: true
+      }
+    }
   },
   platforms: {
-    twitch: { connected: false, ws: null },
-    kick: { configured: false }
+    twitch: { connected: false, ws: null, enabled: true },
+    kick: { configured: false, enabled: true },
+    streamlabs: { enabled: true },
+    donationalerts: { enabled: true }
   },
   reducer: {
     enabled: false,
@@ -91,11 +117,16 @@ const state = {
     channel: "",
     configured: false
   },
+  streamlabs: {
+    socketToken: "",
+    configured: false
+  },
   settings: {
     autoSave: false,
     soundAlerts: false,
     startMinimized: false
-  }
+  },
+  distanceDisplayMode: "meters"
 };
 
 

@@ -131,7 +131,7 @@ function updateOverlay(data) {
     
     if (!isFirstLoad) {
       if (animationEnabled && data.enableValueAnimation !== false && newValue !== lastValue && lastValue !== '') {
-        const animationSpeed = data.animationSpeed || 1000; // Default 1 second
+        const animationSpeed = data.animationSpeed || 1000;
         const isTimeFormat = /^\d{2}:\d{2}:\d{2}$/.test(newValue);
         animateCounter(overlayValue, lastValue, newValue, animationSpeed, isTimeFormat);
       } else {
@@ -176,7 +176,6 @@ function updateOverlay(data) {
   const alignment = data.unitAlignment || 'center';
   overlayUnit.style.textAlign = alignment;
   overlayUnit.style.width = '100%';
-  overlayUnit.style.display = 'block';
   overlayUnit.style.alignSelf = 'stretch';
   overlayUnit.style.boxSizing = 'border-box';
 

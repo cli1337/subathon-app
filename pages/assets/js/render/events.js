@@ -5,6 +5,9 @@ const { saveAllConfig } = require("./config");
 
 let eventsList = document.getElementById("eventsList");
 let eventsListInitialized = false;
+let currentPage = 1;
+const eventsPerPage = 5;
+let eventToDelete = null;
 
 function initEventsList() {
   if (!eventsList) eventsList = document.getElementById("eventsList");
@@ -21,21 +24,11 @@ function initEventsList() {
       const id = item.dataset.id;
       if (!id) return;
 
-      const idx = state.events.findIndex(ev => String(ev.id) === id);
-      if (idx !== -1) {
-        state.events.splice(idx, 1);
+      eventToDelete = id;
+      const deleteEventModal = document.getElementById("deleteEventModal");
+      if (deleteEventModal) {
+        deleteEventModal.classList.add("show");
       }
-
-      item.style.animation = "fadeOut 0.2s ease forwards";
-      setTimeout(() => {
-        if (item.parentNode) {
-          item.parentNode.removeChild(item);
-        }
-        if (!state.events.length) {
-          clearEvents();
-        }
-        saveAllConfig();
-      }, 180);
     });
   }
 }
@@ -47,7 +40,7 @@ function addEvent(type, platform, rawValue, gifterName = null) {
 
   }
 
-  let delta = state.metricType === "distance" ? rawValue / 1000 : rawValue;
+  let delta = rawValue;
   state.currentValue += delta;
   state.totalEvents++;
   state.valueAdded += delta;
@@ -71,14 +64,26 @@ function addEvent(type, platform, rawValue, gifterName = null) {
 
   updateDisplay();
   updateStats();
-  addEventToList(event);
+  
+  if (currentPage === 1) {
+    addEventToList(event, true);
+  } else {
+
+  }
+  
   saveAllConfig();
 }
 
-function addEventToList(event) {
+function addEventToList(event, isNewEvent = false) {
   initEventsList();
   if (!eventsList) return;
   if (eventsList.querySelector(".empty-state")) eventsList.innerHTML = "";
+  
+  if (isNewEvent === true) {
+    const existingPagination = eventsList.querySelector(".events-pagination");
+    if (existingPagination) existingPagination.remove();
+  }
+  
   const item = document.createElement("div");
   item.className = "event-item";
 
@@ -87,10 +92,7 @@ function addEventToList(event) {
   }
   item.dataset.id = String(event.id);
   item.style.animation = "slideIn 0.3s ease";
-  const iconBg = event.platform === "Twitch" ? "#9146ff" : "#53fc18";
-  const icon = event.platform === "Twitch" ? "TV" : "K";
   item.innerHTML = `
-    <div class="event-icon" style="background:${iconBg};">${icon}</div>
     <div class="event-content">
       <div class="event-title">${event.type}</div>
       <div class="event-meta">${event.platform} • ${formatTime(event.timestamp)}</div>
@@ -103,15 +105,101 @@ function addEventToList(event) {
       </svg>
     </button>
   `;
-  eventsList.insertBefore(item, eventsList.firstChild);
+  
+  if (isNewEvent === true && currentPage === 1) {
+    const pagination = eventsList.querySelector(".events-pagination");
+    if (pagination) {
+      eventsList.insertBefore(item, pagination);
+    } else {
+      eventsList.insertBefore(item, eventsList.firstChild);
+    }
+  } else {
+    eventsList.appendChild(item);
+  }
 }
 
 function renderEventsList() {
   initEventsList();
   if (!eventsList) return;
-  if (!state.events.length) return clearEvents();
+  if (!state.events.length) {
+    clearEvents();
+    return;
+  }
+  
   eventsList.innerHTML = "";
-  state.events.forEach(addEventToList);
+  
+  const totalPages = Math.ceil(state.events.length / eventsPerPage);
+  const startIndex = (currentPage - 1) * eventsPerPage;
+  const endIndex = startIndex + eventsPerPage;
+  const eventsToShow = state.events.slice(startIndex, endIndex);
+  
+  eventsToShow.forEach(addEventToList);
+  
+  if (totalPages > 1) {
+    const pagination = document.createElement("div");
+    pagination.className = "events-pagination";
+    pagination.style.cssText = "display: flex; align-items: center; justify-content: center; gap: 8px; padding: 16px; border-top: 1px solid var(--border-color);";
+    
+    const prevBtn = document.createElement("button");
+    prevBtn.className = "btn btn-secondary";
+    prevBtn.textContent = "Previous";
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.onclick = () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderEventsList();
+      }
+    };
+    
+    const pageInfo = document.createElement("span");
+    pageInfo.style.cssText = "font-size: 14px; color: var(--text-secondary);";
+    pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+    
+    const nextBtn = document.createElement("button");
+    nextBtn.className = "btn btn-secondary";
+    nextBtn.textContent = "Next";
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.onclick = () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderEventsList();
+      }
+    };
+    
+    pagination.appendChild(prevBtn);
+    pagination.appendChild(pageInfo);
+    pagination.appendChild(nextBtn);
+    
+    eventsList.appendChild(pagination);
+  } else {
+    currentPage = 1;
+  }
+}
+
+function deleteEventById(eventId) {
+  const idx = state.events.findIndex(ev => String(ev.id) === eventId);
+  if (idx === -1) return;
+  
+  const deletedEvent = state.events[idx];
+  const deletedValue = deletedEvent.value || 0;
+  
+  state.events.splice(idx, 1);
+  state.totalEvents = Math.max(0, state.totalEvents - 1);
+  
+  state.valueAdded = state.events.reduce((sum, ev) => sum + (ev.value || 0), 0);
+  
+  state.currentValue = Math.max(0, state.currentValue - deletedValue);
+  
+  const totalPages = Math.ceil(state.events.length / eventsPerPage);
+  if (currentPage > totalPages && totalPages > 0) {
+    currentPage = totalPages;
+  }
+  if (currentPage < 1) currentPage = 1;
+  
+  updateDisplay();
+  updateStats();
+  renderEventsList();
+  saveAllConfig();
 }
 
 function clearEvents() {
@@ -167,9 +255,10 @@ function updateGifterDisplay(gifterName, value) {
 
 window.handleSubs = function(count, gifterName = null) {
   if (typeof count !== "number" || count <= 0) return;
-  const valuePerSub = state.config.subValue || 120;
+  const defaultValues = state.config.eventValues?.kick || {};
+  const valuePerSub = defaultValues.subValue || 120;
   addEvent(`Subscription${count > 1 ? 's' : ''} (${count}x)`, "Manual", valuePerSub * count, gifterName);
 };
 
-module.exports = { addEvent, renderEventsList, clearEvents, updateGifterDisplay };
+module.exports = { addEvent, renderEventsList, clearEvents, updateGifterDisplay, deleteEventById };
 

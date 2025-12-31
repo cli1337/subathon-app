@@ -12,9 +12,31 @@
                 <div class="platform-switcher">
                     <button class="platform-switch-btn active" data-platform="kick" id="switchKickBtn">
                         <span>Kick</span>
+                        <label class="platform-toggle-switch" onclick="event.stopPropagation();">
+                            <input type="checkbox" id="kickPlatformEnabled" checked>
+                            <span class="platform-toggle-slider"></span>
+                        </label>
                     </button>
                     <button class="platform-switch-btn" data-platform="twitch" id="switchTwitchBtn">
                         <span>Twitch</span>
+                        <label class="platform-toggle-switch" onclick="event.stopPropagation();">
+                            <input type="checkbox" id="twitchPlatformEnabled" checked>
+                            <span class="platform-toggle-slider"></span>
+                        </label>
+                    </button>
+                    <button class="platform-switch-btn" data-platform="streamlabs" id="switchStreamlabsBtn">
+                        <span>Streamlabs</span>
+                        <label class="platform-toggle-switch" onclick="event.stopPropagation();">
+                            <input type="checkbox" id="streamlabsPlatformEnabled" checked>
+                            <span class="platform-toggle-slider"></span>
+                        </label>
+                    </button>
+                    <button class="platform-switch-btn" data-platform="donationalerts" id="switchDonationalertsBtn">
+                        <span>DonationAlerts</span>
+                        <label class="platform-toggle-switch" onclick="event.stopPropagation();">
+                            <input type="checkbox" id="donationalertsPlatformEnabled" checked>
+                            <span class="platform-toggle-slider"></span>
+                        </label>
                     </button>
                     <div class="platform-switch-indicator" id="platformSwitchIndicator"></div>
                 </div>
@@ -57,6 +79,11 @@
                         </p>
                     </div>
                     <div class="form-group">
+                        <label>Kick Username (for getting ID)</label>
+                        <input type="text" id="kickUsernameInput" class="input"
+                            placeholder="yourkickusername">
+                    </div>
+                    <div class="form-group">
                         <label>Chatroom ID</label>
                         <div style="display: flex; gap: 8px;">
                             <input type="text" id="kickChatroomIdInput" class="input"
@@ -70,11 +97,6 @@
                             Enter your Kick username below → click "Get Chatroom ID" →
                             copy the <code>id</code> from the JSON → paste here.
                         </p>
-                    </div>
-                    <div class="form-group">
-                        <label>Kick Username (for getting ID)</label>
-                        <input type="text" id="kickUsernameInput" class="input"
-                            placeholder="yourkickusername">
                     </div>
                     <div style="display: flex; gap: 8px;">
                         <button class="btn btn-primary" id="saveKickBtn">
@@ -155,9 +177,121 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Streamlabs Platform Content -->
+                <div class="platform-content hidden" id="streamlabsPlatformContent">
+                    <div class="platform-header">
+                        <div class="platform-icon streamlabs-icon">
+                            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" height="28" width="28">
+                                <desc>
+                                    Streamlabs Streamline Icon: https://streamlinehq.com
+                                </desc>
+                                <title>Streamlabs</title>
+                                <path d="M8.6878 1.3459a1.365 1.365 0 0 0 -0.2734 0.0058c-0.528 0.066 -1.0133 0.1616 -1.4843 0.3086A10.0568 10.0568 0 0 0 0.3208 8.2697c-0.147 0.471 -0.2445 0.9583 -0.3105 1.4863 -0.091 0.734 0.431 1.4041 1.166 1.4961 0.734 0.091 1.404 -0.43 1.496 -1.164 0.05 -0.406 0.119 -0.7316 0.209 -1.0196A7.3736 7.3736 0 0 1 7.727 4.221c0.288 -0.09 0.6145 -0.157 1.0195 -0.207 0.735 -0.092 1.255 -0.7631 1.164 -1.4981a1.3394 1.3394 0 0 0 -1.2226 -1.17Zm4.0488 5.2226c-2.629 0 -3.9432 0.0007 -4.9472 0.5117A4.684 4.684 0 0 0 5.7406 9.131c-0.512 1.004 -0.5117 2.3183 -0.5117 4.9473v4.289c0 1.502 -0.001 2.2542 0.291 2.8282 0.257 0.505 0.6679 0.9149 1.1719 1.1719 0.574 0.292 1.326 0.291 2.828 0.291h6.9706c2.628 0 3.9442 0.0012 4.9472 -0.5098a4.6883 4.6883 0 0 0 2.0507 -2.0508c0.512 -1.004 0.5117 -2.3182 0.5117 -4.9472v-1.0723c0 -2.629 0.0003 -3.9433 -0.5117 -4.9473a4.6883 4.6883 0 0 0 -2.0507 -2.0508c-1.003 -0.511 -2.3193 -0.5117 -4.9472 -0.5117zm0.537 6.7051c0.741 0 1.3399 0.5998 1.3399 1.3398v2.6836c0 0.74 -0.5988 1.3399 -1.3398 1.3399 -0.74 0 -1.3418 -0.5999 -1.3418 -1.3399v-2.6836c0 -0.74 0.6018 -1.3398 1.3418 -1.3398zm5.3632 0c0.74 0 1.3399 0.5998 1.3399 1.3398v2.6836c0 0.74 -0.5999 1.3399 -1.3399 1.3399 -0.741 0 -1.3398 -0.5999 -1.3398 -1.3399v-2.6836c0 -0.74 0.5989 -1.3398 1.3398 -1.3398z" fill="#000000" stroke-width="1"></path>
+                            </svg>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <h3>STREAMLABS</h3>
+                                <span class="connection-indicator" id="streamlabsConnectionIndicator" title="Socket Disconnected"></span>
+                            </div>
+                            <p class="platform-status" id="streamlabsStatus">Not Configured</p>
+                            <p id="streamlabsConfigDisplay"
+                                style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;"></p>
+                        </div>
+                    </div>
+                    <div class="platform-form">
+                        <div class="form-group">
+                            <label>Socket Token</label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="password" id="streamlabsSocketTokenInput" class="input"
+                                    style="flex: 1;" placeholder="Your Streamlabs socket token">
+                                <button class="btn btn-secondary" id="getStreamlabsTokenBtn">
+                                    Get Token
+                                </button>
+                            </div>
+                            <p
+                                style="font-size:13px;color:var(--text-secondary);margin-top:6px;">
+                                Get your socket token from <a href="https://streamlabs.com/dashboard#/settings/api-settings" target="_blank" style="color: var(--accent-primary);">Streamlabs API</a> (requires authentication)
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-primary" id="saveStreamlabsBtn">
+                                Save Configuration
+                            </button>
+                            <button class="btn btn-secondary" id="resetStreamlabsBtn">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DonationAlerts Platform Content -->
+                <div class="platform-content hidden" id="donationalertsPlatformContent">
+                    <div class="platform-header">
+                        <div class="platform-icon donationalerts-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor" style="width: 28px; height: 28px;">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <h3>DONATIONALERTS</h3>
+                                <span class="connection-indicator" id="donationalertsConnectionIndicator" title="Socket Disconnected"></span>
+                            </div>
+                            <p class="platform-status" id="donationalertsStatus">Not Configured</p>
+                            <p id="donationalertsConfigDisplay"
+                                style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;"></p>
+                        </div>
+                    </div>
+                    <div class="platform-form">
+                        <div class="form-group">
+                            <label>Widget Token</label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="password" id="donationalertsAccessTokenInput" class="input"
+                                    style="flex: 1;" placeholder="Your DonationAlerts widget token">
+                                <button class="btn btn-secondary" id="getDonationalertsTokenBtn">
+                                    Get Token
+                                </button>
+                            </div>
+                            <p
+                                style="font-size:13px;color:var(--text-secondary);margin-top:6px;">
+                                Get your widget token from <a href="https://www.donationalerts.com/dashboard/general-settings/account" target="_blank" style="color: var(--accent-primary);">DonationAlerts Account Settings</a> (copy the token from your alerts widget page)
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-primary" id="saveDonationalertsBtn">
+                                Save Configuration
+                            </button>
+                            <button class="btn btn-secondary" id="resetDonationalertsBtn">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Manual event card (commented out in original) is left in index.html if needed -->
+    </div>
+</div>
+
+<div class="modal" id="resetPlatformModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Reset Platform Configuration</h2>
+            <button class="btn btn-icon" id="closeResetPlatformModalBtn"><svg viewbox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg></button>
+        </div>
+        <div class="modal-body">
+            <p id="resetPlatformMessage">Are you sure you want to reset this platform's configuration? This will clear all settings.</p>
+            <p style="color: var(--danger-color); font-weight: 600; margin-top: 12px;">This action cannot be undone!</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="cancelResetPlatformBtn">Cancel</button>
+            <button class="btn btn-danger" id="confirmResetPlatformBtn">Reset Configuration</button>
+        </div>
     </div>
 </div>
 

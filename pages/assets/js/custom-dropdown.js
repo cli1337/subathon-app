@@ -143,14 +143,7 @@
         this.menu.style.visibility = '';
       }
       
-      const spaceBelow = viewportHeight - buttonRect.bottom;
-      const spaceAbove = buttonRect.top;
-      const menuHeight = menuRect.height || 240;
-      
-      if (spaceBelow < menuHeight && spaceAbove > spaceBelow) {
-        this.menu.classList.add('dropdown-up');
-      }
-      
+
       const menuWidth = menuRect.width || buttonRect.width;
       
       if (buttonRect.left + menuWidth > viewportWidth) {
@@ -176,13 +169,8 @@
           this.menu.style.minWidth = '0';
           this.menu.style.zIndex = '10000';
           
-          if (this.menu.classList.contains('dropdown-up')) {
-            this.menu.style.bottom = `${viewportHeight - buttonRect.top + 4}px`;
-            this.menu.style.top = 'auto';
-          } else {
-            this.menu.style.top = `${buttonRect.bottom + 4}px`;
-            this.menu.style.bottom = 'auto';
-          }
+          this.menu.style.top = `${buttonRect.bottom + 4}px`;
+          this.menu.style.bottom = 'auto';
           
           if (this.menu.classList.contains('dropdown-right')) {
             this.menu.style.right = `${viewportWidth - buttonRect.right}px`;

@@ -5,7 +5,6 @@ const { showToast } = require("./toast");
 const { updateConnectionStatus } = require("./display");
 let refreshKickUI = null;
 
-// Check if we're in development mode (defaults to true for safety)
 const isDev = typeof window === 'undefined' || window.DEV_MODE !== false;
 
 let ws = null;
@@ -37,7 +36,7 @@ function cleanupSocket() {
 }
 
 function scheduleReconnect() {
-  if (reconnectTimeout || !state.kick?.configured) return;
+  if (reconnectTimeout || !state.kick?.configured || state.platforms?.kick?.enabled === false) return;
   reconnectTimeout = setTimeout(() => {
     reconnectTimeout = null;
     connectKickSocket();
@@ -69,8 +68,12 @@ function handleKickMessage(raw) {
     const count = Array.isArray(data.gifted_usernames) ? data.gifted_usernames.length : (data.quantity || 0);
     if (!count || count <= 0) return;
 
+    const kickValues = state.config.eventValues?.kick || {};
+    if (kickValues.platformEnabled === false) return;
+    if (kickValues.giftEnabled === false) return;
+
     const gifterName = data.gifter_username || data.username || "Anonymous";
-    const valuePerGift = state.config.giftValue || 60;
+    const valuePerGift = kickValues.giftValue || 60;
     const totalValue = valuePerGift * count;
 
     addEvent(`Gift Subscription${count > 1 ? "s" : ""} (${count}x)`, "KICK", totalValue, gifterName);
@@ -78,8 +81,12 @@ function handleKickMessage(raw) {
   }
 
   if (msg.event === "App\\Events\\SubscriptionEvent") {
+    const kickValues = state.config.eventValues?.kick || {};
+    if (kickValues.platformEnabled === false) return;
+    if (kickValues.subEnabled === false) return;
+
     const username = data.username || data.sender_username || "Unknown";
-    const valuePerSub = state.config.subValue || 120;
+    const valuePerSub = kickValues.subValue || 120;
 
     addEvent("Subscription", "KICK", valuePerSub, username);
     return;
@@ -87,6 +94,11 @@ function handleKickMessage(raw) {
 }
 
 function connectKickSocket() {
+  if (state.platforms?.kick?.enabled === false) {
+    cleanupSocket();
+    return;
+  }
+
   const chatroomId = getChatroomId();
   if (!chatroomId) {
     return;

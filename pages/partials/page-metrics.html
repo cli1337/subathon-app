@@ -13,27 +13,80 @@
             <div class="card-content">
                 <div class="form-group">
                     <label data-i18n="type_label">Type</label>
-                    <select id="metricType" class="input">
-                        <option value="time" data-i18n="unit_time">
-                            Time (HH:MM:SS)
-                        </option>
-                        <option value="distance" data-i18n="unit_distance">
-                            Distance (KM/M)
-                        </option>
-                        <option value="custom" data-i18n="unit_custom">
-                            Custom Unit
-                        </option>
-                    </select>
+                    <div class="input-wrapper">
+                        <select id="metricType" class="input">
+                            <option value="time" data-i18n="unit_time">
+                                Time (DD:HH:MM:SS)
+                            </option>
+                            <option value="distance" data-i18n="unit_distance">
+                                Distance (KM/M)
+                            </option>
+                            <option value="custom" data-i18n="unit_custom">
+                                Custom Unit
+                            </option>
+                        </select>
+                        <p class="form-hint" id="metricTypeHint">
+                            Track duration in days, hours, minutes, and seconds. Example: 1 day 2 hours = 01:02:00:00
+                        </p>
+                    </div>
+                </div>
+                <div id="distanceDisplaySection" class="form-group" style="display:none;">
+                    <label>Distance Display</label>
+                    <div class="input-wrapper">
+                        <select id="distanceDisplayMode" class="input">
+                            <option value="meters">Meters (M)</option>
+                            <option value="km">Kilometers (KM)</option>
+                        </select>
+                        <p class="form-hint">
+                            Choose how distance is displayed. Values are always stored in meters internally.
+                        </p>
+                    </div>
                 </div>
                 <div id="customUnitSection" class="form-group" style="display:none;">
                     <label data-i18n="custom_unit_name">Custom Unit Name</label>
-                    <input type="text" id="customUnit"
-                        placeholder="e.g., Points, Stars, etc." class="input">
+                    <div class="input-wrapper">
+                        <input type="text" id="customUnit"
+                            placeholder="e.g., Points, Stars, etc." class="input">
+                        <p class="form-hint">
+                            Examples: Points, Stars, Coins, XP, Levels, etc.
+                        </p>
+                    </div>
                 </div>
-                <div class="form-group" style="margin-top:10px;">
+                <div class="form-group">
                     <label data-i18n="starting_value">Starting Value</label>
-                    <input type="text" id="startingValue" placeholder="00:00:00 or 0"
-                        class="input">
+                    <div class="input-wrapper">
+                        <p class="form-hint" id="startingValueHint" style="display:none;">
+                            Enter value in kilometers or meters (e.g., 5.5 or 1000)
+                        </p>
+                        <div id="timeInputContainer" style="display:none !important;">
+                            <div class="time-input-group">
+                                <div class="time-input-item">
+                                    <label>Days</label>
+                                    <input type="number" id="timeDays" min="0" class="input" value="0">
+                                </div>
+                                <span class="time-separator">:</span>
+                                <div class="time-input-item">
+                                    <label>Hours</label>
+                                    <input type="number" id="timeHours" min="0" max="23" class="input" value="0">
+                                </div>
+                                <span class="time-separator">:</span>
+                                <div class="time-input-item">
+                                    <label>Minutes</label>
+                                    <input type="number" id="timeMinutes" min="0" max="59" class="input" value="0">
+                                </div>
+                                <span class="time-separator">:</span>
+                                <div class="time-input-item">
+                                    <label>Seconds</label>
+                                    <input type="number" id="timeSeconds" min="0" max="59" class="input" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="startingValueContainer">
+                            <input type="text" id="startingValue" placeholder="00:00:00 or 0"
+                                class="input">
+                        </div>
+                        <p class="form-error" id="startingValueError"></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -45,33 +98,134 @@
                 </p>
             </div>
             <div class="card-content">
+                <div class="event-switcher">
+                    <button class="event-switch-btn active" data-platform="kick" id="switchKickEventBtn">
+                        <span>Kick</span>
+                        <label class="platform-toggle-switch" onclick="event.stopPropagation();">
+                            <input type="checkbox" id="kickPlatformEnabled" checked>
+                            <span class="platform-toggle-slider"></span>
+                        </label>
+                    </button>
+                    <button class="event-switch-btn" data-platform="twitch" id="switchTwitchEventBtn">
+                        <span>Twitch</span>
+                        <label class="platform-toggle-switch" onclick="event.stopPropagation();">
+                            <input type="checkbox" id="twitchPlatformEnabled" checked>
+                            <span class="platform-toggle-slider"></span>
+                        </label>
+                    </button>
+                    <button class="event-switch-btn" data-platform="streamlabs" id="switchStreamlabsEventBtn">
+                        <span>Streamlabs</span>
+                        <label class="platform-toggle-switch" onclick="event.stopPropagation();">
+                            <input type="checkbox" id="streamlabsPlatformEnabled" checked>
+                            <span class="platform-toggle-slider"></span>
+                        </label>
+                    </button>
+                    <button class="event-switch-btn" data-platform="donationalerts" id="switchDonationalertsEventBtn">
+                        <span>Donationalerts</span>
+                        <label class="platform-toggle-switch" onclick="event.stopPropagation();">
+                            <input type="checkbox" id="donationalertsPlatformEnabled" checked>
+                            <span class="platform-toggle-slider"></span>
+                        </label>
+                    </button>
+                    <div class="event-switch-indicator" id="eventSwitchIndicator"></div>
+                </div>
                 <div class="event-values">
-                    <div class="event-value-item">
-                        <label data-i18n="subscription">Subscription</label>
-                        <input type="number" id="subValue" value="120" class="input">
-                        <span class="unit-label" data-i18n="seconds">seconds</span>
+                    <div class="event-value-content" id="kickEventContent">
+                        <div class="form-group event-value-group">
+                            <div class="event-value-header">
+                                <label data-i18n="subscription">Subscription</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="kickSubEnabled" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="input-wrapper-with-unit">
+                                <input type="number" id="kickSubValue" value="120" class="input" step="1" min="0">
+                                <span class="unit-label-inline" data-i18n="seconds">seconds</span>
+                            </div>
+                        </div>
+                        <div class="form-group event-value-group">
+                            <div class="event-value-header">
+                                <label data-i18n="gift_sub">Gift Sub</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="kickGiftEnabled" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="input-wrapper-with-unit">
+                                <input type="number" id="kickGiftValue" value="60" class="input" step="1" min="0">
+                                <span class="unit-label-inline" data-i18n="seconds">seconds</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="event-value-item">
-                        <label data-i18n="gift_sub">Gift Sub</label>
-                        <input type="number" id="giftValue" value="60" class="input">
-                        <span class="unit-label" data-i18n="seconds">seconds</span>
+                    <div class="event-value-content hidden" id="twitchEventContent">
+                        <div class="form-group event-value-group">
+                            <div class="event-value-header">
+                                <label data-i18n="subscription">Subscription</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="twitchSubEnabled" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="input-wrapper-with-unit">
+                                <input type="number" id="twitchSubValue" value="120" class="input" step="1" min="0">
+                                <span class="unit-label-inline" data-i18n="seconds">seconds</span>
+                            </div>
+                        </div>
+                        <div class="form-group event-value-group">
+                            <div class="event-value-header">
+                                <label data-i18n="gift_sub">Gift Sub</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="twitchGiftEnabled" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="input-wrapper-with-unit">
+                                <input type="number" id="twitchGiftValue" value="60" class="input" step="1" min="0">
+                                <span class="unit-label-inline" data-i18n="seconds">seconds</span>
+                            </div>
+                        </div>
+                        <div class="form-group event-value-group">
+                            <div class="event-value-header">
+                                <label>Bits</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="twitchBitsEnabled" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="input-wrapper-with-unit">
+                                <input type="number" id="twitchBitsValue" value="30" class="input" step="0.01" min="0">
+                                <span class="unit-label-inline">units</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="event-value-item">
-                        <label data-i18n="bits_per_100">Bits (per 100)</label>
-                        <input type="number" id="bitsValue" value="30" class="input">
-                        <span class="unit-label" data-i18n="seconds">seconds</span>
+                    <div class="event-value-content hidden" id="streamlabsEventContent">
+                        <div class="form-group event-value-group">
+                            <div class="event-value-header">
+                                <label>Donation</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="streamlabsDonationEnabled" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div id="streamlabsDonationCurrencies">
+                                <!-- Currency donation inputs will be dynamically generated here -->
+                            </div>
+                        </div>
                     </div>
-                    <div class="event-value-item">
-                        <label>Donation (per &euro;1)</label>
-                        <input type="number" id="donationValue" value="60"
-                            class="input">
-                        <span class="unit-label">seconds</span>
-                    </div>
-                    <div class="event-value-item">
-                        <label data-i18n="follow">Follow</label>
-                        <input type="number" id="followValue" value="0"
-                            class="input">
-                        <span class="unit-label" data-i18n="seconds">seconds</span>
+                    <div class="event-value-content hidden" id="donationalertsEventContent">
+                        <div class="form-group event-value-group">
+                            <div class="event-value-header">
+                                <label>Donations</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="donationalertsDonationEnabled" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div id="donationalertsDonationCurrencies">
+                                <!-- Currency donation inputs will be dynamically generated here -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

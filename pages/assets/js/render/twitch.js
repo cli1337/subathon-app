@@ -20,6 +20,7 @@ const twitchConnectionIndicator = document.getElementById("twitchConnectionIndic
 function refreshTwitchUI() {
   const hasConfig = !!(state.twitch?.channel && state.twitch?.oauth && state.twitch?.username);
   const isConnected = hasConfig && getConnectionStatus();
+  const isEnabled = state.platforms?.twitch?.enabled !== false;
 
   if (hasConfig) {
     twitchStatus.textContent = "Configured";
@@ -38,6 +39,11 @@ function refreshTwitchUI() {
     twitchLockedSection.style.display = "none";
     twitchUsernameInput.disabled = twitchOAuthInput.disabled = twitchChannelInput.disabled = getTwitchOAuthBtn.disabled = false;
     saveTwitchBtn.style.display = "block";
+  }
+
+  const twitchPlatformEnabledToggle = document.getElementById("twitchPlatformEnabled");
+  if (twitchPlatformEnabledToggle) {
+    twitchPlatformEnabledToggle.checked = isEnabled;
   }
 
   if (twitchConnectionIndicator) {
@@ -104,20 +110,42 @@ if (saveTwitchBtn) {
 
 if (resetTwitchBtn) {
   resetTwitchBtn.addEventListener("click", () => {
-    if (confirm("Reset Twitch configuration? This will clear all settings.")) {
-      state.twitch.username = "";
-      state.twitch.oauth = "";
-      state.twitch.channel = "";
-      state.twitch.configured = false;
-      saveAllConfig();
-      refreshTwitchUI();
-      updateConnectionStatus();
-      showToast("Twitch config reset to defaults", "info");
+    const resetModal = document.getElementById("resetPlatformModal");
+    const resetMessage = document.getElementById("resetPlatformMessage");
+    
+    if (resetModal && resetMessage) {
+      resetMessage.textContent = "Are you sure you want to reset Twitch configuration? This will clear all settings.";
+      
+      resetModal.dataset.resetFunction = "twitch";
+      
+      resetModal.classList.add("show");
     }
   });
 }
 
 setRefreshUICallback(refreshTwitchUI);
+
+function initTwitchPlatformToggle() {
+  const twitchPlatformEnabledToggle = document.getElementById("twitchPlatformEnabled");
+  if (twitchPlatformEnabledToggle) {
+    twitchPlatformEnabledToggle.checked = state.platforms?.twitch?.enabled !== false;
+    twitchPlatformEnabledToggle.onchange = null;
+    twitchPlatformEnabledToggle.addEventListener("change", () => {
+      state.platforms.twitch.enabled = twitchPlatformEnabledToggle.checked;
+      saveAllConfig();
+      const { cleanupTwitchSocket } = require("./twitch-socket");
+      if (!twitchPlatformEnabledToggle.checked) {
+        cleanupTwitchSocket();
+      } else if (state.twitch.configured) {
+        const { connectTwitchSocket } = require("./twitch-socket");
+        connectTwitchSocket();
+      }
+      refreshTwitchUI();
+    });
+  }
+}
+
+initTwitchPlatformToggle();
 
 module.exports = { refreshTwitchUI };
 
